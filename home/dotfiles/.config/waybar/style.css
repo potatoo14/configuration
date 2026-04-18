@@ -1,0 +1,230 @@
+/* Catppuccin Mocha palette */
+
+@define-color base   #1e1e2e;
+@define-color mantle #181825;
+@define-color crust  #11111b;
+
+@define-color text     #cdd6f4;
+@define-color subtext0 #a6adc8;
+@define-color subtext1 #bac2de;
+
+@define-color surface0 #313244;
+@define-color surface1 #45475a;
+@define-color surface2 #585b70;
+
+@define-color overlay0 #6c7086;
+@define-color overlay1 #7f849c;
+@define-color overlay2 #9399b2;
+
+@define-color blue      #89b4fa;
+@define-color lavender  #b4befe;
+@define-color sapphire  #74c7ec;
+@define-color sky       #89dceb;
+@define-color teal      #94e2d5;
+@define-color green     #a6e3a1;
+@define-color yellow    #f9e2af;
+@define-color peach     #fab387;
+@define-color maroon    #eba0ac;
+@define-color red       #f38ba8;
+@define-color mauve     #cba6f7;
+@define-color pink      #f5c2e7;
+@define-color flamingo  #f2cdcd;
+@define-color rosewater #f5e0dc;
+
+* {
+  all: unset;
+  /* border: none; */
+  /* border-radius: 0; */
+  font-size: 14px;
+  /* min-height: 0; */
+  /* font-family: "Overpass", "JetBrains Mono Nerd Font"; */
+}
+
+/* window#waybar { */
+/* border-bottom: 100px solid #ffffff; */
+/* background: transparent; */
+/* transition-property: background-color; */
+/* transition-duration: 0.5s; */
+/* } */
+
+tooltip {
+  background-color: @base;
+  /* border: 2px solid @crust; */
+  border-radius: 14px;
+  /* background: transparent; */
+}
+#workspaces button:hover,
+#clock:hover,
+#custom-shader:hover,
+#backlight:hover,
+#custom-backlight:hover,
+#wireplumber:hover,
+#language:hover,
+#tray > widget:hover {
+  background-color: @surface2;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  border-radius: 0px 0px 16px 16px;
+  background-color: @base;
+}
+
+/* i wanted inverted corners, corner rounding outwards, but it's hard */
+.modules-left {
+  padding: 0px 8px 4px 8px;
+}
+.modules-center {
+  padding: 0px 6px 4px 6px;
+}
+.modules-right {
+  padding: 0px 8px 4px 8px;
+}
+
+#custom-uptime,
+#cpu,
+#memory,
+#battery,
+#custom-shader,
+#backlight,
+#custom-backlight,
+#wireplumber,
+#language,
+#tray,
+#tray > widget {
+  padding: 0px 2px;
+  border-radius: 8px;
+}
+
+#custom-uptime,
+#battery {
+  color: @peach;
+}
+#cpu,
+#memory,
+#bluetooth {
+  color: @mauve;
+}
+#backlight,
+#custom-backlight {
+  color: @teal;
+}
+#custom-shader,
+#wireplumber {
+  color: @sapphire;
+}
+#wireplumber.muted {
+  color: @red;
+}
+#language {
+  color: @blue;
+}
+/* #language.intl { */
+/* color: @rosewater; */
+/* } */
+
+#workspaces button {
+  color: @overlay2;
+  padding: 0px 4px;
+  border-radius: 6px;
+}
+
+#workspaces button.active {
+  color: @yellow;
+}
+
+/* fix https://github.com/Alexays/Waybar/issues/2026#issuecomment-1780717766 */
+#window {
+  color: @text;
+  padding: 0px 4px;
+  margin-top: -50px;
+  margin-bottom: -50px;
+}
+
+/* #temperature { */
+/* color: @maroon; */
+/* } */
+
+/* #backlight { */
+/* color: @sky; */
+/* background-color: @surface1; */
+/* padding: 2px 5px; */
+/* margin: 4px 2px; */
+/* } */
+
+/* #network { */
+/* color: @red; */
+/* background-color: @surface1; */
+/* padding: 2px 5px; */
+/* margin: 4px 2px; */
+/* } */
+
+/* #battery { */
+/* color: @maroon; */
+/* background-color: @surface1; */
+/* padding: 2px 5px; */
+/* margin: 4px 2px; */
+/* } */
+
+#clock {
+  padding: 0px 5px;
+  border-radius: 8px;
+  color: @lavender;
+  /* font-weight: bold; looks wierd on nixos */
+}
+
+#tray menu {
+  background-color: @base;
+  color: @rosewater;
+  border-radius: 12px;
+  padding: 6px 10px 6px 10px;
+}
+#tray menu menuitem:hover {
+  color: @overlay2;
+}
+
+/* #idle_inhibitor { */
+/* color: @green; */
+/* background-color: @surface1; */
+/* padding: 2px 9px; */
+/* margin: 4px 2px; */
+/* font-size: 15px; */
+/* } */
+
+/* #gamemode { */
+/* color: @red; */
+/* padding-right: 5px; */
+/* } */
+
+/* #custom-icon { */
+/* font-size: 18px; */
+/* color: @sky; */
+/* padding-right: 5px; */
+/* } */
+
+/* #custom-spotify { */
+/* color: @mauve; */
+/* background-color: @surface1; */
+/* padding: 2px 9px; */
+/* margin: 4px 2px; */
+/* } */
+/* #custom-power { */
+/* color: @red; */
+/* background-color: @surface1; */
+/* padding: 2px 9px; */
+/* margin: 4px 2px; */
+/* font-size: 15px; */
+/* } */
+
+/* #custom-weather { */
+/* color: @peach; */
+/* } */
+
+/* #custom-notification { */
+/* color: @teal; */
+/* background-color: @surface1; */
+/* padding: 2px 9px; */
+/* margin: 4px 2px; */
+/* font-size: 15px; */
+/* } */

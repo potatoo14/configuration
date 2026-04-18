@@ -1,0 +1,35 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[mgr]
+prepend_keymap = [
+
+	# xdg-trash is borked on btrfs subvolumes
+	# https://www.reddit.com/r/btrfs/comments/ul2t9g/no_trash_on_btrfs_subvolumes_other_than_root_and/
+	# https://gitlab.gnome.org/GNOME/glib/-/issues/1885
+	{ on = "d",                run = "remove --permanently",        desc = "Permanently delete selected files" },
+
+	{ on = [ "g", "h" ],       run = "cd ~",                        desc = "home" },
+	{ on = [ "g", "c" ],       run = "cd ~/.config",                desc = "config" },
+	{ on = [ "g", "D" ],       run = "cd ~/nixos/home/dotfiles",    desc = "dotfiles" },
+	{ on = [ "g", "s" ],       run = "cd ~/.local/share",           desc = "local/share" },
+	{ on = [ "g", "d" ],       run = "cd ~/Downloads",              desc = "Downloads" },
+	{ on = [ "g", "r" ],       run = "cd ~/Repos",                  desc = "Repos" },
+	{ on = [ "g", "a" ],       run = "cd ~/Archive",                desc = "Archive" },
+	{ on = [ "g", "w" ],       run = "cd ~/Archive/wallpapers",     desc = "wallpapers" },
+	{ on = [ "g", "n" ],       run = "cd ~/nixos",                  desc = "nixos" },
+	{ on = [ "g", "N" ],       run = "cd /nix/store",               desc = "nix/store" },
+	{ on = [ "g", "G" ],       run = "cd ~/Games",                  desc = "Games" },
+	{ on = [ "g", "o" ],       run = "cd ~/Obsidian",               desc = "Obsidian" },
+	{ on = [ "g", "W" ],       run = "cd /mnt/windows/Users/user/", desc = "windows user" },
+	{ on = [ "g", "m" ],       run = "cd /mnt",                     desc = "mnt" },
+	{ on = [ "g", "H" ],       run = "cd /mnt/hd/stuff",            desc = "hd stuff" },
+	{ on = [ "g", "t" ],       run = "cd /mnt/hd/stuff/Torrent",    desc = "torrents" },
+	{ on = [ "g", "<Space>" ], run = "cd --interactive",            desc = "interactively" },
+
+	{ on = [ "<C-s>" ],   run = 'shell "$SHELL" --block --confirm',      desc = "Open shell here" },
+	{ on = [ "<C-S-s>" ], run = 'shell "DONT_NIX_SHELL=1 $SHELL" --block --confirm',    desc = "Open shell here" },
+	{ on = [ "<C-q>" ],   run = '''shell 'ripdrag "$@"' --confirm''',    desc = "Drag and drop" },
+	{ on = [ "T" ],       run = "plugin toggle-pane min-preview",        desc = "Show or hide the preview pane" },
+]

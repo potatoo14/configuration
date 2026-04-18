@@ -1,0 +1,25 @@
+# delta diff viewer
+[core]
+    pager = delta
+[interactive]
+    diffFilter = delta --color-only
+[delta]
+    navigate = true  # use n and N to move between diff sections
+    dark = true      # or light = true, or omit for auto-detection
+[merge]
+    conflictstyle = zdiff3
+
+[user]
+	email = 92479313+potatoo14@users.noreply.github.com
+	name = potatoo14
+	username = potatoo14
+[credential "https://github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/run/current-system/sw/bin/gh auth git-credential
+[format]
+	pretty = oneline
+[init]
+	defaultBranch = master

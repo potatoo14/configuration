@@ -1,0 +1,46 @@
+theme = "catppuccin_mocha"
+
+[editor.soft-wrap]
+enable = true
+
+[editor.cursor-shape]
+normal = "bar"
+insert = "underline"
+select = "block"
+
+[keys.normal]
+X = ["extend_line_up", "extend_to_line_bounds"]
+A-x = "extend_to_line_bounds"
+A-w = [ "delete_selection", "move_next_word_start", "paste_after" ]
+A-b = [ "delete_selection", "move_prev_word_start", "paste_before" ]
+A-W = [ "delete_selection", "move_next_long_word_start", "paste_after" ]
+A-B = [ "delete_selection", "move_prev_long_word_start", "paste_before" ]
+A-h = [ "delete_selection", "move_char_left", "paste_before" ]
+A-k = [ "delete_selection", "move_line_up", "paste_before" ]
+A-j = [ "delete_selection", "move_line_down", "paste_before" ]
+A-l = [ "delete_selection", "move_char_right", "paste_before" ]
+
+# official yazi tip for integrating both
+C-e = [
+	':sh rm -f /tmp/unique-ca1ea106',
+	':insert-output yazi "%{buffer_name}" --chooser-file=/tmp/unique-ca1ea106',
+	':sh printf "\x1b[?1049h\x1b[?2004h" > /dev/tty',
+	':open %sh{cat /tmp/unique-ca1ea106}',
+	':redraw',
+	':set mouse false',
+  ':set mouse true',
+]
+
+[keys.select]
+X = ["extend_line_up", "extend_to_line_bounds"]
+A-x = "extend_to_line_bounds"
+A-w = [ "delete_selection", "move_next_word_start", "paste_after" ]
+A-b = [ "delete_selection", "move_prev_word_start", "paste_before" ]
+A-W = [ "delete_selection", "move_next_long_word_start", "paste_after" ]
+A-B = [ "delete_selection", "move_prev_long_word_start", "paste_before" ]
+A-h = [ "delete_selection", "move_char_left", "paste_before" ]
+A-k = [ "delete_selection", "move_line_up", "paste_before" ]
+A-j = [ "delete_selection", "move_line_down", "paste_before" ]
+A-l = [ "delete_selection", "move_char_right", "paste_before" ]
+
+

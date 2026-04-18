@@ -1,0 +1,14 @@
+{
+  "modules-right": [
+    // "mpris",
+    "tray",
+    "custom/uptime",
+    // "battery",
+    // "memory",
+    // "cpu",
+    "bluetooth",
+    "custom/shader",
+    "custom/backlight",
+    "wireplumber",
+  ],
+}

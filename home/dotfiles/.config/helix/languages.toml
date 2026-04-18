@@ -1,0 +1,131 @@
+# https://github.com/helix-editor/helix/wiki/Language-Server-Configurations
+
+[[language]]
+name = "nix"
+# formatter = { command = "nixpkgs-fmt" }
+formatter = { command = "alejandra" }
+language-servers = ["nixd"]
+[language-server.nixd]
+command = "nixd" # one day i will learn to configure this shit
+
+[[language]]
+name = "bash"
+formatter = { command = "shfmt" }
+
+[[language]]
+name = "python"
+language-servers = ["basedpyright", "ruff"]
+formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
+[language-server.basedpyright.config.python.analysis]
+typeCheckingMode = "basic"
+[language-server.ruff]
+command = "ruff"
+indent = { tab-width = 2, unit = "  " }
+args = ["server"]
+
+[[language]]
+name = "json"
+formatter = { command = 'prettier', args = ["--parser", "json"] }
+language-servers = [
+  { name = "vscode-json-language-server", except-features = [
+    "format",
+  ] },
+]
+
+[[language]]
+name = "jsonc"
+formatter = { command = 'prettier', args = ["--parser", "jsonc"] }
+language-servers = [
+  { name = "vscode-json-language-server", except-features = [
+    "format",
+  ] },
+]
+
+[[language]]
+name = "html"
+language-servers = ["vscode-html-language-server"]
+formatter = { command = 'prettier', args = ["--parser", "html"] }
+
+
+[[language]]
+name = "css"
+# language-servers = ["vscode-css-language-server"]
+language-servers = []                                            # disable css lsp, it complains a lot for no reason
+formatter = { command = 'prettier', args = ["--parser", "css"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  { name = "vscode-eslint-language-server" },
+]
+
+[[language]]
+name = "typescript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  { name = "vscode-eslint-language-server" },
+]
+
+[[language]]
+name = "jsx"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  { name = "vscode-eslint-language-server" },
+]
+
+[[language]]
+name = "tsx"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+language-servers = [
+  { name = "typescript-language-server", except-features = [
+    "format",
+  ] },
+  { name = "vscode-eslint-language-server" },
+]
+
+[[language]]
+name = "yaml"
+formatter = { command = 'prettier', args = ["--parser", "yaml"] }
+
+[[language]] # taplo lsp?
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+
+[language-server.matlab-ls]
+command = "matlab-language-server"
+args = ["--stdio"]
+
+[language-server.matlab-ls.config.MATLAB]
+indexWorkspace = false
+installPath = "/run/current-system/sw/bin"
+matlabConnectionTiming = "onStart"
+telemetry = false
+
+[[language]]
+name = "matlab"
+scope = "source.m"
+file-types = ["m"]
+language-servers = ["matlab-ls"]
+comment-token = "%"
+shebangs = ["octave-cli", "matlab"]
+indent = { tab-width = 2, unit = "  " }
+
+[language-server.rust-analyzer.config.cargo]
+# This tells rust-analyzer to use `target/rust-analyzer` 
+# for all of its background checking and proc-macro compiling.
+targetDir = true
+
+# Optional but highly recommended: 
+# If you also want rust-analyzer to use Clippy instead of standard cargo check
+[language-server.rust-analyzer.config.check]
+command = "clippy"
