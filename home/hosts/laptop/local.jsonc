@@ -3,7 +3,7 @@
     // "mpris",
     "tray",
     "custom/uptime",
-    "battery",
+    // "battery",
     "memory",
     // "cpu",
     "bluetooth",

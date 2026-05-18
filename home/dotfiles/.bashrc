@@ -33,6 +33,9 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
+# please dark theme for everything
+export ADW_DEBUG_COLOR_SCHEME=prefer-dark
+
 alias ff='fastfetch'
 alias mobilerun='adb devices && npx expo start --android --localhost'
 alias hyprd='hyprctl dispatch'
@@ -79,6 +82,9 @@ ns() {
 	)
 }
 nr() {
+	nix run --impure nixpkgs#"$1"
+}
+ngr() {
 	hyprctl dispatch exec "nix run --impure nixpkgs#$1"
 }
 
@@ -113,6 +119,14 @@ rvicinae() {
 
 inspectexe() {
 	$EDITOR "$(which "$1")"
+}
+
+# https://github.com/nix-community/nix-index-database ad-hoc download
+download_nixpkgs_cache_index () {
+  filename="index-$(uname -m | sed 's/^arm64$/aarch64/')-$(uname | tr "[:upper:]" "[:lower:]")"
+  mkdir -p ~/.cache/nix-index && cd ~/.cache/nix-index || exit
+  wget -q -N "https://github.com/nix-community/nix-index-database/releases/latest/download/$filename"
+  ln -f "$filename" files
 }
 
 # auto enter nix-shell when apropriate

@@ -16,8 +16,8 @@ image_delay = 0
 image_quality = 90
 
 [opener]
-wallpaper = [ # change wallpaper
-  { run = "~/.config/hypr/setwall.sh %s", desc = 'Set as wallpaper' },
+wallpaper = [
+  { run = "~/.config/hypr/bin/wallupdater.sh %s", desc = 'Set as wallpaper' },
 ]
 
 [open]

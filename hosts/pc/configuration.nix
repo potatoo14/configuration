@@ -78,30 +78,30 @@
   };
 
   # automatic backups
-  services.btrbk = {
-    niceness = 10;
-    instances.hd = {
-      onCalendar = "daily";
-      settings = {
-        # nix creates a btrbk user,
-        # so it has problems with permissions
-        # transaction_log = "/var/log/btrbk.log";
-        # lockfile = "/run/lock/btrbk.lock";
-        stream_buffer = "256m";
-        snapshot_create = "onchange";
-        snapshot_preserve_min = "latest";
-        target_preserve = "0h 10d 5w 6m 0y";
-        target_preserve_min = "latest";
-        volume."/mnt/ssd" = {
-          target = "/mnt/hd/system_backup";
-          subvolume = "home/user";
-        };
-      };
-    };
-  };
+  # services.btrbk = {
+  #   niceness = 10;
+  #   instances.hd = {
+  #     onCalendar = "daily";
+  #     settings = {
+  #       # nix creates a btrbk user,
+  #       # so it has problems with permissions
+  #       # transaction_log = "/var/log/btrbk.log";
+  #       # lockfile = "/run/lock/btrbk.lock";
+  #       stream_buffer = "256m";
+  #       snapshot_create = "onchange";
+  #       snapshot_preserve_min = "latest";
+  #       target_preserve = "0h 10d 5w 6m 0y";
+  #       target_preserve_min = "latest";
+  #       volume."/mnt/ssd" = {
+  #         target = "/mnt/hd/system_backup";
+  #         subvolume = "home/user";
+  #       };
+  #     };
+  #   };
+  # };
 
   # btrbk is erroring out because it's trying to run b4 the hd is mounted
-  systemd.services.btrbk-hd.unitConfig.RequiresMountsFor = "/mnt/ssd /mnt/hd/system_backup";
+  # systemd.services.btrbk-hd.unitConfig.RequiresMountsFor = "/mnt/ssd /mnt/hd/system_backup";
 
   systemd.services.windows-sync = {
     script = ''
@@ -118,7 +118,6 @@
       User = "user";
     };
   };
-
   systemd.timers.windows-sync = {
     wantedBy = ["timers.target"];
     timerConfig = {

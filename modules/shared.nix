@@ -56,26 +56,6 @@
     };
   };
 
-  # make the sshd available, but not enabled
-  systemd.services.sshd.wantedBy = lib.mkForce [];
-  services.openssh = {
-    enable = true;
-    openFirewall = true; # should be true by default, but just to make sure
-    # ports = [22];
-    # listenAddresses = [ # doesn't work error 255
-    #   {
-    #     addr = "192.168.18.18";
-    #     port = 39902;
-    #   }
-    # ];
-    settings = {
-      PasswordAuthentication = false;
-      UseDns = true;
-      # X11Forwarding = true;
-      # PermitRootLogin = "no";
-    };
-  };
-
   systemd.coredump.extraConfig = "Storage=none\nProcessSizeMax=0";
   services.journald.extraConfig = "SystemMaxUse=100M";
 
@@ -126,9 +106,6 @@
   # this enables a spec that works for any terminal
   xdg.terminal-exec.enable = true;
 
-  services.tailscale.enable = true;
-  systemd.services.tailscaled.wantedBy = lib.mkForce [];
-
   programs = {
     nh = {
       enable = true;
@@ -138,7 +115,6 @@
 
   environment.systemPackages = with pkgs; [
     #-terminal-#
-    tailscale
     # quickemu
     bash-completion
     helix
@@ -152,7 +128,6 @@
     ncdu
     # trash-cli # trash is borked on btrfs subvolumes
     fd
-    # zellij
     python3
     jq
     usbutils # for lsusb
@@ -163,6 +138,7 @@
     libnotify
     mediainfo
     ffmpeg
+    nix-index
 
     #-language-utils-#
     git

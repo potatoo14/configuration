@@ -45,7 +45,7 @@
   ];
   environment.systemPackages = with pkgs; [
     mangohud
-    heroic
+    # heroic
     # osu-lazer-bin
     # gamescope
     # (prismlauncher.override {jdks = [jdk21];})

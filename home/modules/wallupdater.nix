@@ -11,7 +11,7 @@
     Install = {WantedBy = ["graphical-session.target"];};
     Service = {
       Type = "oneshot";
-      ExecStart = "%h/.config/hypr/wallupdater.sh";
+      ExecStart = "%h/.config/hypr/bin/wallupdater.sh";
     };
   };
 

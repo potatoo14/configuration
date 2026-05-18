@@ -18,6 +18,6 @@
     ])
     gcc
     mold
-    # lldb
+    gdb
   ];
 }

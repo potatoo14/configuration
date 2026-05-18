@@ -51,9 +51,8 @@ in {
       ".config/git/config"
       ".config/helix"
       ".config/hypr/hyprland.conf"
-      ".config/hypr/setwall.sh"
-      ".config/hypr/shader.py"
-      ".config/hypr/wallupdater.sh"
+      ".config/hypr/bin/shader.py"
+      ".config/hypr/bin/wallupdater.sh"
       ".config/kitty"
       ".config/MangoHud/MangoHud.conf"
       ".config/mpv/mpv.conf"
@@ -105,6 +104,10 @@ in {
         };
         "${config.home.homeDirectory}/Repos/Shared" = {
           id = "Shared Repos";
+          inherit devices;
+        };
+        "${config.home.homeDirectory}/nixos" = {
+          id = "nixos";
           inherit devices;
         };
       };
@@ -183,14 +186,4 @@ in {
     };
   };
 
-  # programs = {
-  #   bash = {
-  #     enable = true;
-  #     bashrcExtra = builtins.readFile ./dotfiles/.bashrc;
-  #     profileExtra = builtins.readFile ./dotfiles/.bash_profile;
-  #   };
-  # };
-
-  # Let home Manager install and manage itself.
-  # programs.home-manager.enable = true;
 }
