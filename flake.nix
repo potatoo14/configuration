@@ -68,6 +68,7 @@
             ./modules/dev/rust.nix
             ./modules/dev/android-expo.nix
             ./modules/dev/matlab.nix
+            ./modules/dev/lua.nix
             ./modules/voice-call.nix
             ./modules/binary-cache.nix
 
@@ -117,6 +118,7 @@
             ./modules/dev/rust.nix
             ./modules/dev/matlab.nix
             ./modules/dev/android-expo.nix
+            ./modules/dev/lua.nix
             ./modules/virt-manager.nix
 
             home-manager.nixosModules.home-manager

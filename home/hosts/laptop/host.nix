@@ -11,7 +11,6 @@ in {
     ".cargo/config.toml"
     ".config/hypr/bin/volume.sh"
     ".config/hypr/bin/brightness.sh"
-    ".config/hypr/local.conf"
     ".config/waybar/local.jsonc"
   ];
 

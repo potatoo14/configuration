@@ -129,3 +129,10 @@ targetDir = true
 # If you also want rust-analyzer to use Clippy instead of standard cargo check
 [language-server.rust-analyzer.config.check]
 command = "clippy"
+
+[[language]]
+name = "lua"
+language-servers = ["emmylua"]
+
+[language-server.emmylua]
+command = "emmylua_ls"

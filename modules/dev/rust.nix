@@ -12,7 +12,7 @@
       "cargo"
       "clippy"
       "rust-src"
-      "rustc-codegen-cranelift-preview"
+      # "rustc-codegen-cranelift-preview"
       "rustfmt"
       "rust-analyzer-preview"
     ])

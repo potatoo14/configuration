@@ -7,7 +7,7 @@
   ...
 }: let
   defVicinaeExtesions = list: let
-    repoSrc = pkgs.fetchFromGitHub { # hopefully caching isn't invalidated anymore
+    repoSrc = pkgs.fetchFromGitHub { # hopefully caching isn't invalidated anymore, fuck
       owner = "vicinaehq";
       repo = "extensions";
       rev = "cf30b80f619282d45b1748eb76e784a4f875bb01";
@@ -50,10 +50,10 @@ in {
       ".config/foot"
       ".config/git/config"
       ".config/helix"
-      ".config/hypr/hyprland.conf"
+      ".config/hypr/hyprland.lua"
+      ".config/hypr/bin/screenshot.sh"
       ".config/hypr/bin/shader.py"
       ".config/hypr/bin/wallupdater.sh"
-      ".config/kitty"
       ".config/MangoHud/MangoHud.conf"
       ".config/mpv/mpv.conf"
       ".config/pipewire/pipewire.conf"
@@ -67,7 +67,6 @@ in {
       ".config/yazi/theme.toml"
       ".config/yazi/yazi.toml"
       ".config/dxvk.conf"
-      ".cargo/config.toml"
     ];
 
   services.syncthing = {

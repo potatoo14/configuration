@@ -82,7 +82,9 @@ void main() {{
 with open(file, "w") as f:
     _ = f.write(shader)
 
+# cursed shit with tons of char escaping
 _ = os.system(
-    f"hyprctl keyword decoration:screen_shader {file} && \
+    f"hyprctl eval \
+    'hl.config({{decoration={{screen_shader=\"{file}\"}}}})' && \
     pkill -RTMIN+1 waybar"
 )

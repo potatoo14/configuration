@@ -56,7 +56,10 @@
     };
   };
 
-  systemd.coredump.extraConfig = "Storage=none\nProcessSizeMax=0";
+  systemd.coredump.settings.Coredump = {
+    Storage = "none";
+    ProcessSizeMax = 0;
+  };
   services.journald.extraConfig = "SystemMaxUse=100M";
 
   # dbus broker is faster and more efficient, it's the default on arch and fedora
