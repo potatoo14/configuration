@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   sharedState,
   inputs,
@@ -28,12 +25,8 @@
   nix.nixPath = ["nixpkgs=${inputs.nixpkgs}"]; # for nixd
 
   # for syncthing
-  networking.firewall.allowedTCPPorts = [22000];
+  networking.firewall.allowedTCPPorts = [22000 3000];
   networking.firewall.allowedUDPPorts = [21027 22000];
-
-  # https://astrid.tech/2022/11/03/0/overlay-nixpkgs-pr/
-  # it conflicts with the nixpkgs options, idk how lib.mkForce would be used here
-  # imports = ["${inputs.nixpkgs-grub-fix}/nixos/modules/system/boot/loader/grub/grub.nix"];
 
   nixpkgs.overlays = [
     (import ./overlay.nix)
@@ -157,6 +150,8 @@
     basedpyright
     ruff
     delta
+    emmylua-ls
+    emmylua-check
   ];
 
   # automatic garbage collection
@@ -172,17 +167,4 @@
     dates = ["daily"];
   };
 
-  # running on unstable, it's actually not a good idea to run auto updates
-  # manual intervention might occasionally be necessary
-  # system.autoUpgrade = {
-  #   enable = true;
-  #   flake = "/home/user/nixos";
-  #   flags = [
-  #     "-L" # print build logs
-  #     "--recreate-lock-file" # i think this works
-  #   ];
-  #   operation = "boot";
-  #   dates = "sat";
-  #   randomizedDelaySec = "1h";
-  # };
 }

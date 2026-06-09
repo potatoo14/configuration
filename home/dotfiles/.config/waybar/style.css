@@ -125,9 +125,13 @@ tooltip {
 /* } */
 
 #workspaces button {
-  color: @overlay2;
+  color: @subtext0;
   padding: 0px 4px;
   border-radius: 6px;
+}
+
+#workspaces button.empty {
+  color: @overlay0;
 }
 
 #workspaces button.active {

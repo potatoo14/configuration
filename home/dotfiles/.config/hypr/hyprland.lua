@@ -2,40 +2,52 @@
 -- and the lua std is too minimal, would be nice to use luarocks
 
 -- ==========================================
--- VARIABLES & UTILITY FUNCTIONS
+-- UTILITY
 -- ==========================================
 
 local SCRIPTS = os.getenv("HOME") .. "/.config/hypr/bin"
 
-local function mkScriptRunner(name)
+function log(txt)
+  hl.notification.create({ text = txt, duration = 10000 })
+end
+
+function mkScriptRunner(name)
   return function (args)
     return hl.dsp.exec_cmd(string.format("%s/%s %s", SCRIPTS, name, args))
   end
 end
 
-local function multiBind(keys, bind)
+function multiBind(keys, bind)
   for _, key in ipairs(keys) do
     hl.bind(key, bind)
   end
+end
+
+function custom_exec(programs)
+  for _, program in ipairs(programs) do
+    hl.exec_cmd("uwsm app -- " .. program)
+  end
+end
+
+function reload()
+  hl.exec_cmd("pkill waybar")
+  custom_exec({ "waybar" })
+  hl.exec_cmd("hyprctl reload") -- cursed
 end
 
 -- ==========================================
 -- AUTOSTART
 -- ==========================================
 
-local function multiExec(programs)
-  for _, program in ipairs(programs) do
-    hl.exec_cmd("uwsm app -- " .. program)
-  end
-end
 hl.on("hyprland.start", function ()
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_RUNTIME_DIR")
-  multiExec({
+  custom_exec({
     "swaync",
     "vicinae server",
     "waybar",
     "fcitx5",
-    "easyeffects --gapplication-service"
+    "easyeffects --gapplication-service",
+    "transmission-gtk"
   })
 end)
 
@@ -43,7 +55,7 @@ end)
 -- ENVIRONMENT VARIABLES
 -- ==========================================
 
-local function setEnv(vars)
+function setEnv(vars)
   for key, val in pairs(vars) do
     hl.env(key, val)
   end
@@ -110,7 +122,7 @@ end
 -- ==========================================
 
 hl.curve("sharp", { type = "bezier", points = { { 0, 0.9 }, { 0, 1.0 } } })
-local function animate(animations)
+function animate(animations)
   for leaf, val in pairs(animations) do
     -- If val is a table, extract [1] and [2]. Otherwise, val is just the speed.
     local speed = type(val) == "table" and val[1] or val
@@ -131,7 +143,7 @@ animate({
   border = 7,
   borderangle = 6,
   fade = 5,
-  workspaces = 4,
+  workspaces = 3,
   specialWorkspace = { 4, "slidevert" }
 })
 
@@ -156,29 +168,28 @@ hl.window_rule({
 -- KEYBINDS
 -- ==========================================
 
-local function bindApps(binds)
+function bindApps(binds)
   for key, app in pairs(binds) do
     hl.bind("SUPER +" .. key, hl.dsp.exec_cmd("uwsm app -- " .. app))
   end
 end
 bindApps({
-  s = "foot",
-  a = "foot btop",
+  z = "foot",
+  x = "foot btop",
   e = "foot yazi",
   f = "firefox",
   c = "qalculate-gtk",
-  d = "easyeffects",
-  w = "vicinae toggle",
-  t = "transmission-gtk"
+  g = "easyeffects",
+  q = "vicinae toggle",
 })
 
-hl.bind("SUPER + q", hl.dsp.window.close())
-hl.bind("SUPER + grave", hl.dsp.window.fullscreen())
-hl.bind("MOD3 + grave", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + grave", hl.dsp.window.close())
 hl.bind("SUPER + tab", hl.dsp.layout("togglesplit"))
+-- hl.bind("SUPER + grave", hl.dsp.window.fullscreen())
+-- hl.bind("MOD3 + grave", hl.dsp.window.float({ action = "toggle" }))
 
-local function bindDirs(mod, dispatcher, dirTable)
-  for key, val in pairs(dirTable) do
+function bindDirs(mod, dispatcher, table)
+  for key, val in pairs(table) do
     hl.bind(mod .. "+" .. key, dispatcher(val))
   end
 end
@@ -192,30 +203,82 @@ local dirtable = {
 bindDirs("SUPER", hl.dsp.focus, dirtable)
 bindDirs("SUPER + SHIFT", hl.dsp.window.move, dirtable)
 
-local coordtable = {
+bindDirs("SUPER + CONTROL", hl.dsp.window.resize, {
   h = { x = -50, y = 0, relative = true },
   j = { x = 0, y = 50, relative = true },
   k = { x = 0, y = -50, relative = true },
   l = { x = 50, y = 0, relative = true }
-}
-bindDirs("SUPER + CONTROL", hl.dsp.window.resize, coordtable)
+})
 
 -- ==========================================
 -- WORKSPACES
 -- ==========================================
 
-for i = 1, 10 do
-  local key = i % 10 -- 10 maps to key 0
-  hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
-  hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+-- setup the Grid
+for i = 1, 6 do
+  hl.workspace_rule({ workspace = tostring(i), persistent = true })
 end
 
-hl.bind("SUPER + d", hl.dsp.workspace.toggle_special("sound"))
+-- center at launch
+hl.on("hyprland.start", function ()
+  hl.dispatch(hl.dsp.focus({ workspace = "2" }))
+end)
 
-multiBind({ "SUPER + x", "SUPER + mouse_up" }, hl.dsp.focus({ workspace = "r+1" }))
-multiBind({ "SUPER + z", "SUPER + mouse_down" }, hl.dsp.focus({ workspace = "r-1" }))
-multiBind({ "SUPER + SHIFT + x", "SUPER + SHIFT + mouse_up" }, hl.dsp.window.move({ workspace = "r+1" }))
-multiBind({ "SUPER + SHIFT + z", "SUPER + SHIFT + mouse_down" }, hl.dsp.window.move({ workspace = "r-1" }))
+function move_grid(direction, move_window)
+  ---@diagnostic disable-next-line: need-check-nil
+  local current_ws = hl.get_active_workspace().id
+  local target_ws
+  local anim_dir = ""
+  local dispatcher = move_window and hl.dsp.window.move or hl.dsp.focus
+
+  -- do some math to figure out which workspace number maps to the grid
+  if direction == "right" and current_ws % 3 ~= 0 then
+    target_ws = current_ws + 1
+    anim_dir = "right"
+  elseif direction == "left" and current_ws % 3 ~= 1 then
+    target_ws = current_ws - 1
+    anim_dir = "left"
+  elseif direction == "up" and current_ws > 3 then
+    target_ws = current_ws - 3
+    anim_dir = "top"
+  elseif direction == "down" and current_ws <= 3 then
+    target_ws = current_ws + 3
+    anim_dir = "bottom"
+  else
+    return -- we hit an edge, do nothing
+  end
+
+  hl.animation({
+    leaf = "workspaces",
+    enabled = true,
+    speed = 3,
+    bezier = "sharp",
+    style = "slide " .. anim_dir
+  })
+
+  hl.dispatch(dispatcher({ workspace = tostring(target_ws) }))
+end
+
+local windowtable = { w = "up", a = "left", s = "down", d = "right" }
+-- eager function eval shit on lua
+bindDirs("SUPER", function (val)
+  return function ()
+    move_grid(val)
+  end
+end, windowtable
+)
+bindDirs("SUPER + SHIFT", function (val)
+  return function ()
+    move_grid(val, true)
+  end
+end, windowtable
+)
+hl.bind("SUPER + mouse_up", function ()
+  move_grid("right")
+end)
+hl.bind("SUPER + mouse_down", function ()
+  move_grid("left")
+end)
 
 hl.bind("SUPER + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
@@ -224,7 +287,7 @@ hl.bind("SUPER + mouse:273", hl.dsp.window.resize(), { mouse = true })
 -- MULTIMEDIA & FUNCTION KEYS
 -- ==========================================
 
-local function mplayer(a)
+function mplayer(a)
   return hl.dsp.exec_cmd("playerctl " .. a)
 end
 multiBind({ "XF86AudioPlay", "MOD3 + 1" }, mplayer("play-pause"))
@@ -270,12 +333,9 @@ hl.bind("MOD3 + z", shader("-"))
 
 hl.bind("MOD3 + SUPER + q", hl.dsp.exec_cmd("hyprpicker -a"))
 
-hl.bind(
-  "SUPER + ALT + s",
-  hl
-    .dsp
-    .exec_cmd("pkill waybar; hyprctl eval 'hl.exec_cmd(\"uwsm app -- waybar\")'; hyprctl reload") -- cursed
-)
+hl.bind("SUPER + ALT + s", function ()
+  reload()
+end)
 hl.bind("SUPER + ALT + a", hl.dsp.exec_cmd("pkill waybar"))
 
 hl.bind("SUPER + ALT + z", hl.dsp.exec_cmd("roccatsavucontrol -a 1"))

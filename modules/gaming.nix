@@ -17,6 +17,7 @@
       package = pkgs.steam.override {
         extraEnv = {
           MANGOHUD = true;
+          PROTON_USE_XALIA = false; # i don't use controllers and dwproton's xalia has a high cpu usage bug
         };
       };
     };
@@ -25,10 +26,10 @@
     (final: prev: {
       dw-proton-bin = prev.proton-ge-bin.overrideAttrs (oldAttrs: rec {
         pname = "dw-proton-bin";
-        version = "dwproton-10.0-20";
+        version = "dwproton-11.0-2";
         src = prev.fetchzip {
           url = "https://dawn.wine/dawn-winery/dwproton/releases/download/${version}/${version}-x86_64.tar.xz";
-          hash = "sha256-6JXRQgVK0CSV6OxEGoZAx9oFNtrXMu+lrR9QdT9Yyos=";
+          hash = "sha256-3AxBr8fQh4bbAsdSSZuyQR2GOz78vdhC6jJbLmiYEXY=";
         };
         preFixup = "";
       });

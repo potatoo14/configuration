@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    emmylua-ls
-    emmylua-check
+    gcc
+    mold
+    gdb
+    clang-tools
   ];
 }

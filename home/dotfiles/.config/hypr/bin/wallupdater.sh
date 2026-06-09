@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-solarpaper=~/.config/hypr/bin/solarpaper
-walldir=~/Archive/wallpapers/_favorites
+args=lsd
+
+solarpaper() {
+	~/.config/hypr/bin/solarpaper "$@" ~/Archive/wallpapers/_favorites 
+}
 
 hyprexec() {
 	hyprctl eval 'hl.exec_cmd([[ '"$1"' ]])'
@@ -16,7 +19,7 @@ setwall() {
 if [[ -n "$1" ]]; then
 	setwall "$1"
 else
-	wallfile="$($solarpaper -lsd "$walldir")"
-	[[ -e "$wallfile" ]] || wallfile="$($solarpaper -flsd "$walldir")"
+	wallfile=$(solarpaper -"$args")
+	[[ -e "$wallfile" ]] || wallfile="$(solarpaper -f"$args")"
 	setwall "$wallfile"
 fi
