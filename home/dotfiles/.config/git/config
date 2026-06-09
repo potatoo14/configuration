@@ -23,3 +23,5 @@
 	pretty = oneline
 [init]
 	defaultBranch = master
+[credential]
+	helper = cache

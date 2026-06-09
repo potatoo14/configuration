@@ -18,17 +18,11 @@
 
   networking = {
     hostName = "pc";
-    wireless.enable = false; # Enables wireless support via wpa_supplicant.
-    # networkmanager.enable = lib.mkForce false;
+    wireless.enable = false;
   };
 
   # roccat udev rules, so it can acess hardware
   services.udev.packages = [pkgs-stable.roccat-tools];
-
-  # services.flatpak.enable = true;
-
-  hardware.bluetooth.enable = true;
-  # systemd.services.bluetooth.wantedBy = lib.mkForce [];
 
   programs = {
     gamemode.settings.gpu = {
@@ -52,12 +46,6 @@
       # distrobox
       # flatpak-builder
 
-      # libclang
-      # gdtoolkit_4
-      # basedpyright
-      # pylyzer
-      # ruff
-
       #-apps-#
       anki-bin
       transmission_4-gtk
@@ -66,7 +54,6 @@
       universal-android-debloater
       # aseprite
       # prismlauncher
-      # chromium
     ]
     ++ [pkgs-stable.roccat-tools];
 

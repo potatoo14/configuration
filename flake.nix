@@ -65,14 +65,12 @@
             ./modules/shared.nix
             ./modules/desktop.nix
             ./modules/gaming.nix
+            ./modules/dev/c-family.nix
             ./modules/dev/rust.nix
             ./modules/dev/android-expo.nix
             ./modules/dev/matlab.nix
-            ./modules/dev/lua.nix
             ./modules/voice-call.nix
             ./modules/binary-cache.nix
-
-            # determinate.nixosModules.default
 
             # home is built with the system
             home-manager.nixosModules.home-manager
@@ -118,8 +116,8 @@
             ./modules/dev/rust.nix
             ./modules/dev/matlab.nix
             ./modules/dev/android-expo.nix
-            ./modules/dev/lua.nix
             ./modules/virt-manager.nix
+            ./modules/mongo.nix
 
             home-manager.nixosModules.home-manager
             {
