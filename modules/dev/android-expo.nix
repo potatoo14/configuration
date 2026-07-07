@@ -17,7 +17,7 @@
   environment.systemPackages = with pkgs; [
     android-tools
     android-nixpkgs-sdk
-    nodejs_25
+    nodejs_latest
     typescript-language-server
     watchman
   ];

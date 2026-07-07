@@ -6,10 +6,11 @@
 -- ==========================================
 
 local SCRIPTS = os.getenv("HOME") .. "/.config/hypr/bin"
+local HOST_IS_PC = os.getenv("USER") == "user"
 
-function log(txt)
-  hl.notification.create({ text = txt, duration = 10000 })
-end
+-- function log(txt)
+--   hl.notification.create({ text = txt, duration = 10000 })
+-- end
 
 function mkScriptRunner(name)
   return function (args)
@@ -46,9 +47,11 @@ hl.on("hyprland.start", function ()
     "vicinae server",
     "waybar",
     "fcitx5",
-    "easyeffects --gapplication-service",
-    "transmission-gtk"
+    "easyeffects --gapplication-service"
   })
+  if HOST_IS_PC then
+    custom_exec({"transmission-gtk"})
+  end
 end)
 
 -- ==========================================
@@ -84,6 +87,9 @@ hl.config({
   decoration = {
     rounding = 10,
     screen_shader = "~/.config/hypr/blue-light-filter.glsl"
+  },
+  cursor = {
+    no_hardware_cursors = true -- to allow tearing
   },
   debug = {
     damage_tracking = 0 -- fix shader refresh, it's a shit fix, i know
@@ -163,6 +169,14 @@ hl.window_rule({
   float = true,
   center = true
 })
+hl.window_rule({
+  match = { class = "osu!" },
+  immediate = true
+})
+hl.window_rule({
+  match = { class = "ADanceOfFireAndIce" },
+  immediate = true
+})
 
 -- ==========================================
 -- KEYBINDS
@@ -180,13 +194,14 @@ bindApps({
   f = "firefox",
   c = "qalculate-gtk",
   g = "easyeffects",
-  q = "vicinae toggle",
+  q = "vicinae toggle"
 })
 
 hl.bind("SUPER + grave", hl.dsp.window.close())
 hl.bind("SUPER + tab", hl.dsp.layout("togglesplit"))
--- hl.bind("SUPER + grave", hl.dsp.window.fullscreen())
--- hl.bind("MOD3 + grave", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + 1", hl.dsp.window.fullscreen())
+hl.bind("SUPER + 2", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + 3", hl.dsp.window.pin({ action = "toggle" }))
 
 function bindDirs(mod, dispatcher, table)
   for key, val in pairs(table) do
@@ -333,10 +348,11 @@ hl.bind("MOD3 + z", shader("-"))
 
 hl.bind("MOD3 + SUPER + q", hl.dsp.exec_cmd("hyprpicker -a"))
 
-hl.bind("SUPER + ALT + s", function ()
-  reload()
-end)
+hl.bind("SUPER + ALT + s", reload)
 hl.bind("SUPER + ALT + a", hl.dsp.exec_cmd("pkill waybar"))
 
 hl.bind("SUPER + ALT + z", hl.dsp.exec_cmd("roccatsavucontrol -a 1"))
 hl.bind("SUPER + ALT + x", hl.dsp.exec_cmd("roccatsavucontrol -a 2"))
+
+-- check tearing in the actual game
+hl.bind("SUPER + ALT + tab", hl.dsp.exec_cmd("hyprctl monitors > ~/monitors.txt"))

@@ -26,6 +26,35 @@
                "/etc/profiles/per-user/user/share/applications",
                "/run/current-system/sw/share/applications"
             ]
+         },
+         "entrypoints": {
+            "cups": {
+               "enabled": false
+            },
+            "fcitx5-configtool": {
+               "enabled": false
+            },
+            "foot-server": {
+               "enabled": false
+            },
+            "footclient": {
+               "enabled": false
+            },
+            "kbd-layout-viewer5": {
+               "enabled": false
+            },
+            "nixos-manual": {
+               "enabled": false
+            },
+            "org.fcitx.Fcitx5": {
+               "enabled": false
+            },
+            "org.fcitx.fcitx5-migrator": {
+               "enabled": false
+            },
+            "uuctl": {
+               "enabled": false
+            }
          }
       },
       "clipboard": {
@@ -34,7 +63,34 @@
       "developer": {
          "enabled": false
       },
+      "files": {
+         "enabled": false
+      },
+      "font": {
+         "enabled": false
+      },
+      "manage-shortcuts": {
+         "enabled": false
+      },
       "raycast-compat": {
+         "enabled": false
+      },
+      "scripts": {
+         "enabled": false
+      },
+      "shortcuts": {
+         "enabled": false
+      },
+      "snippets": {
+         "enabled": false
+      },
+      "system": {
+         "enabled": false
+      },
+      "theme": {
+         "enabled": false
+      },
+      "wm": {
          "enabled": false
       }
    }

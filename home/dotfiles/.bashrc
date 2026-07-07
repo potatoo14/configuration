@@ -73,6 +73,10 @@ alias sshpc='ssh user@192.168.18.4'
 alias heic2png='magick mogrify -format png *.heic'
 alias png2pdf='magick *.png out.pdf'
 
+hyprexec() {
+	hyprctl eval "custom_exec({'$*'})"
+}
+
 ns() {
 	# shellcheck disable=SC2046
 	nix shell --impure $(
@@ -85,20 +89,7 @@ nr() {
 	nix run --impure nixpkgs#"$1"
 }
 ngr() {
-	hyprctl dispatch exec "nix run --impure nixpkgs#$1"
-}
-
-hyprde() {
-	hyprctl dispatch exec "$@"
-}
-
-# replace home manager symlink with actual file for quick editing
-replace() {
-	cat "$1" >tmp
-	# doesn't really work, hm fucks up permissions
-	# perms=$(stat -c "%A" "$1")
-	# grep -q "$perms" && chmod "$perms" tmp
-	mv -f tmp "$1"
+	hyprexec "nix run --impure nixpkgs#$1"
 }
 
 imgfetch() {
@@ -114,7 +105,7 @@ imgfetch() {
 
 rvicinae() {
 	pgrep vicinae | xargs kill
-	hyprctl dispatch exec 'uwsm app -- vicinae server'
+	hyprexec 'vicinae server'
 }
 
 inspectexe() {

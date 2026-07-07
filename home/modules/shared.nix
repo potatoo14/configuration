@@ -7,11 +7,12 @@
   ...
 }: let
   defVicinaeExtesions = list: let
-    repoSrc = pkgs.fetchFromGitHub { # hopefully caching isn't invalidated anymore, fuck
+    repoSrc = pkgs.fetchFromGitHub {
+      # hopefully caching isn't invalidated anymore, fuck
       owner = "vicinaehq";
       repo = "extensions";
-      rev = "cf30b80f619282d45b1748eb76e784a4f875bb01";
-      hash = "sha256-KwNv+THKbNUey10q26NZPDMSzYTObRHaSDr81QP9CPY=";
+      rev = "b2169756872919f2bdeece9bce47247ba5d99b8a";
+      hash = "sha256-9D3/tZiIUUqNEVs0zdEgdTkY6qS70qbV87+KrXWiwV4=";
     };
   in
     map (name:
@@ -33,15 +34,12 @@ in {
   # treating this like gnu stow
   home.file =
     {
-      # "Obsidian/.obsidian.vimrc".source = "${helix-vim}/helix.vim";
-
-      # "rust-docs".source = "${pkgs.rustc.doc}/share/doc/docs/html/index.html";
-
-      # ".config/fcitx5" = {
-      #   # idk if it's going to work well, more reproducibility is nice anyway (fcitx5)
-      #   source = ./dotfiles/.config/fcitx5;
-      #   recursive = true;
-      # };
+      # for hyprland.lua autocompletion (because of how nix doesn't follow FHS)
+      "nixos/.emmyrc.json".text = builtins.toJSON {
+        workspace = {
+          library = ["${pkgs.hyprland}/share/hypr/stubs"];
+        };
+      };
     }
     // linkDotfiles [
       ".bashrc"
@@ -131,12 +129,19 @@ in {
     };
   };
 
-  home.pointerCursor = {
+  home.pointerCursor = let
+    name = "miku-cursor";
+  in {
     gtk.enable = true;
-    # x11.enable = true;
-    package = pkgs.qogir-icon-theme;
-    name = "Qogir";
     size = 24;
+    inherit name;
+    package = pkgs.runCommand name {} ''
+      mkdir -p $out/share/icons
+      ln -s ${pkgs.fetchzip {
+        url = "https://github.com/supermariofps/hatsune-miku-windows-linux-cursors/releases/download/1.2.6/miku-cursor-linux.tar.xz";
+        sha256 = "sha256-qxWhzTDzjMxK7NWzpMV9EMuF5rg9gnO8AZlc1J8CRjY=";
+      }} $out/share/icons/${name};
+    '';
   };
 
   gtk = {
@@ -157,11 +162,6 @@ in {
       package = pkgs.qogir-icon-theme;
       name = "Qogir";
     };
-
-    # font = {
-    #   name = "Sans";
-    #   size = 11;
-    # };
   };
 
   # i still have to open the gui and configure stuff manually,
@@ -184,5 +184,4 @@ in {
       color-scheme = "prefer-dark";
     };
   };
-
 }

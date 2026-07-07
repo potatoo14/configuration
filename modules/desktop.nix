@@ -78,7 +78,7 @@
     # i don't really need a polkit agent
     # hyprpolkitagent # requires hyprland-qt-support to work properly
     mesa-demos # i like to have glxinfo
-    pandoc # markdown to odt converter
+    # pandoc # markdown to odt converter
 
     keepassxc
     qalculate-gtk
@@ -89,5 +89,5 @@
     # dconf-editor
     # rnote
     # gparted
-  ] ++ [pkgs-stable.libreoffice];
+  ]; # ++ [pkgs-stable.libreoffice];
 }

@@ -26,7 +26,7 @@
     (final: prev: {
       dw-proton-bin = prev.proton-ge-bin.overrideAttrs (oldAttrs: rec {
         pname = "dw-proton-bin";
-        version = "dwproton-11.0-2";
+        version = "dwproton-11.0-4";
         src = prev.fetchzip {
           url = "https://dawn.wine/dawn-winery/dwproton/releases/download/${version}/${version}-x86_64.tar.xz";
           hash = "sha256-3AxBr8fQh4bbAsdSSZuyQR2GOz78vdhC6jJbLmiYEXY=";
