@@ -1,8 +1,6 @@
 {
   pkgs,
-  pkgs-stable,
   lib,
-  inputs,
   ...
 }: {
   # fuck https://github.com/NixOS/nixpkgs/issues/264815

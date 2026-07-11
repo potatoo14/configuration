@@ -50,7 +50,7 @@ hl.on("hyprland.start", function ()
     "easyeffects --gapplication-service"
   })
   if HOST_IS_PC then
-    custom_exec({"transmission-gtk"})
+    -- custom_exec({"transmission-gtk"})
   end
 end)
 

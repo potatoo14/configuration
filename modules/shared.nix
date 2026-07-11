@@ -28,11 +28,7 @@
   networking.firewall.allowedTCPPorts = [22000 3000];
   networking.firewall.allowedUDPPorts = [21027 22000];
 
-  nixpkgs.overlays = [
-    (import ./overlay.nix)
-    # oh god, this was a pain to debug, make an issue later
-    (final: prev: let pkgs = inputs.fenix.inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}; in (inputs.fenix.overlays.default pkgs pkgs) // {vscode-extensions = prev.vscode-extensions;})
-  ];
+  nixpkgs.overlays = [(import ./overlay.nix)];
 
   services.getty.autologinUser = sharedState.username;
 
@@ -166,5 +162,4 @@
     automatic = true;
     dates = ["daily"];
   };
-
 }

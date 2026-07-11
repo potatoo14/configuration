@@ -26,10 +26,10 @@
     (final: prev: {
       dw-proton-bin = prev.proton-ge-bin.overrideAttrs (oldAttrs: rec {
         pname = "dw-proton-bin";
-        version = "dwproton-11.0-4";
+        version = "dwproton-11.0-5";
         src = prev.fetchzip {
           url = "https://dawn.wine/dawn-winery/dwproton/releases/download/${version}/${version}-x86_64.tar.xz";
-          hash = "sha256-3AxBr8fQh4bbAsdSSZuyQR2GOz78vdhC6jJbLmiYEXY=";
+          hash = "sha256-2x4xotJ2aJYbg+G2TDPqyU7uuoc/hZQon9CA6SFGin0=";
         };
         preFixup = "";
       });

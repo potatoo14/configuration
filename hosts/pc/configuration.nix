@@ -1,6 +1,6 @@
 {
   pkgs,
-  pkgs-stable,
+  pkgs-old,
   ...
 }: {
   imports = [./hardware-configuration.nix];
@@ -22,7 +22,7 @@
   };
 
   # roccat udev rules, so it can acess hardware
-  services.udev.packages = [pkgs-stable.roccat-tools];
+  services.udev.packages = [pkgs-old.roccat-tools];
 
   programs = {
     gamemode.settings.gpu = {
@@ -55,7 +55,7 @@
       # aseprite
       # prismlauncher
     ]
-    ++ [pkgs-stable.roccat-tools];
+    ++ [pkgs-old.roccat-tools];
 
   # Open ports in the firewall.
   # for transmission, but isp locks down router, unfortuanely >:(

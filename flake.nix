@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-25.11";
+    nixpkgs-old.url = "nixpkgs/nixos-25.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -10,18 +10,13 @@
 
     fenix.url = "github:nix-community/fenix/monthly";
 
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
   outputs = {
-    self,
     nixpkgs,
-    nixpkgs-stable,
+    nixpkgs-old,
     home-manager,
-    fenix,
     ...
   } @ inputs: let
     globalSharedState = {
@@ -55,19 +50,18 @@
           specialArgs = {
             inherit inputs;
             inherit sharedState;
-            pkgs-stable = import nixpkgs-stable {
+            pkgs-old = import nixpkgs-old {
               system = "x86_64-linux";
               overlays = [(import ./modules/overlay.nix)];
             };
           };
           modules = [
             ./hosts/pc/configuration.nix
+            ./modules/cachyos-kernel.nix
             ./modules/shared.nix
             ./modules/desktop.nix
             ./modules/gaming.nix
-            ./modules/dev/c-family.nix
-            ./modules/dev/rust.nix
-            ./modules/dev/android-expo.nix
+            ./modules/rust.nix
             ./modules/voice-call.nix
             ./modules/binary-cache.nix
 
@@ -103,18 +97,13 @@
           specialArgs = {
             inherit inputs;
             inherit sharedState;
-            pkgs-stable = import nixpkgs-stable {
-              system = "x86_64-linux";
-              overlays = [(import ./modules/overlay.nix)];
-            };
           };
           modules = [
             ./hosts/laptop/configuration.nix
+            ./modules/cachyos-kernel.nix
             ./modules/shared.nix
             ./modules/desktop.nix
-            ./modules/dev/rust.nix
-            ./modules/dev/android-expo.nix
-            ./modules/mongo.nix
+            ./modules/rust.nix
 
             home-manager.nixosModules.home-manager
             {

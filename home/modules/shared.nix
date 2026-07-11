@@ -11,8 +11,8 @@
       # hopefully caching isn't invalidated anymore, fuck
       owner = "vicinaehq";
       repo = "extensions";
-      rev = "b2169756872919f2bdeece9bce47247ba5d99b8a";
-      hash = "sha256-9D3/tZiIUUqNEVs0zdEgdTkY6qS70qbV87+KrXWiwV4=";
+      rev = "afb84fe4b5253777ff82db8e19e6cc0c9b7f811f";
+      hash = "sha256-Non+frT3WG0TN60zCq63m8+d7yNmCCMaI363kZaDmPM=";
     };
   in
     map (name:
@@ -132,6 +132,7 @@ in {
   home.pointerCursor = let
     name = "miku-cursor";
   in {
+    enable = true;
     gtk.enable = true;
     size = 24;
     inherit name;
@@ -147,8 +148,7 @@ in {
   gtk = {
     enable = true;
 
-    # gtk4 was never intended to be themed (fixing evaluation warning)
-    gtk4.theme = null;
+    gtk4.theme = config.gtk.theme; # theming is hard
 
     theme = {
       package = pkgs.catppuccin-gtk.override {
