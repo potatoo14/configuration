@@ -11,28 +11,29 @@ local HOST_IS_PC = os.getenv("USER") == "user"
 -- function log(txt)
 --   hl.notification.create({ text = txt, duration = 10000 })
 -- end
-
 function mkScriptRunner(name)
   return function (args)
     return hl.dsp.exec_cmd(string.format("%s/%s %s", SCRIPTS, name, args))
   end
 end
-
 function multiBind(keys, bind)
   for _, key in ipairs(keys) do
     hl.bind(key, bind)
   end
 end
-
-function custom_exec(programs)
+function batchBind(mod, dispatcher, table)
+  for key, val in pairs(table) do
+    hl.bind(mod .. "+" .. key, dispatcher(val))
+  end
+end
+function customExec(programs)
   for _, program in ipairs(programs) do
     hl.exec_cmd("uwsm app -- " .. program)
   end
 end
-
 function reload()
   hl.exec_cmd("pkill waybar")
-  custom_exec({ "waybar" })
+  customExec({ "waybar" })
   hl.exec_cmd("hyprctl reload") -- cursed
 end
 
@@ -42,15 +43,16 @@ end
 
 hl.on("hyprland.start", function ()
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_RUNTIME_DIR")
-  custom_exec({
+  customExec({
     "swaync",
     "vicinae server",
     "waybar",
     "fcitx5",
-    "easyeffects --gapplication-service"
+    "easyeffects --gapplication-service",
+    "firefox"
   })
   if HOST_IS_PC then
-    -- custom_exec({"transmission-gtk"})
+    customExec({"transmission-gtk"})
   end
 end)
 
@@ -182,20 +184,21 @@ hl.window_rule({
 -- KEYBINDS
 -- ==========================================
 
-function bindApps(binds)
-  for key, app in pairs(binds) do
-    hl.bind("SUPER +" .. key, hl.dsp.exec_cmd("uwsm app -- " .. app))
-  end
-end
-bindApps({
-  z = "foot",
-  x = "foot btop",
-  e = "foot yazi",
-  f = "firefox",
-  c = "qalculate-gtk",
-  g = "easyeffects",
-  q = "vicinae toggle"
-})
+batchBind(
+  "SUPER",
+  function (app)
+    return hl.dsp.exec_cmd("uwsm app -- " .. app)
+  end,
+  {
+    z = "foot",
+    x = "foot btop",
+    e = "foot yazi",
+    f = "firefox",
+    c = "qalculate-gtk",
+    g = "easyeffects",
+    q = "vicinae toggle"
+  }
+)
 
 hl.bind("SUPER + grave", hl.dsp.window.close())
 hl.bind("SUPER + tab", hl.dsp.layout("togglesplit"))
@@ -203,22 +206,16 @@ hl.bind("SUPER + 1", hl.dsp.window.fullscreen())
 hl.bind("SUPER + 2", hl.dsp.window.float({ action = "toggle" }))
 hl.bind("SUPER + 3", hl.dsp.window.pin({ action = "toggle" }))
 
-function bindDirs(mod, dispatcher, table)
-  for key, val in pairs(table) do
-    hl.bind(mod .. "+" .. key, dispatcher(val))
-  end
-end
-
 local dirtable = {
   h = { direction = "left" },
   j = { direction = "down" },
   k = { direction = "up" },
   l = { direction = "right" }
 }
-bindDirs("SUPER", hl.dsp.focus, dirtable)
-bindDirs("SUPER + SHIFT", hl.dsp.window.move, dirtable)
+batchBind("SUPER", hl.dsp.focus, dirtable)
+batchBind("SUPER + SHIFT", hl.dsp.window.move, dirtable)
 
-bindDirs("SUPER + CONTROL", hl.dsp.window.resize, {
+batchBind("SUPER + CONTROL", hl.dsp.window.resize, {
   h = { x = -50, y = 0, relative = true },
   j = { x = 0, y = 50, relative = true },
   k = { x = 0, y = -50, relative = true },
@@ -233,11 +230,6 @@ bindDirs("SUPER + CONTROL", hl.dsp.window.resize, {
 for i = 1, 6 do
   hl.workspace_rule({ workspace = tostring(i), persistent = true })
 end
-
--- center at launch
-hl.on("hyprland.start", function ()
-  hl.dispatch(hl.dsp.focus({ workspace = "2" }))
-end)
 
 function move_grid(direction, move_window)
   ---@diagnostic disable-next-line: need-check-nil
@@ -276,13 +268,13 @@ end
 
 local windowtable = { w = "up", a = "left", s = "down", d = "right" }
 -- eager function eval shit on lua
-bindDirs("SUPER", function (val)
+batchBind("SUPER", function (val)
   return function ()
     move_grid(val)
   end
 end, windowtable
 )
-bindDirs("SUPER + SHIFT", function (val)
+batchBind("SUPER + SHIFT", function (val)
   return function ()
     move_grid(val, true)
   end

@@ -37,6 +37,7 @@ export XMODIFIERS=@im=fcitx
 export ADW_DEBUG_COLOR_SCHEME=prefer-dark
 
 alias ff='fastfetch'
+alias of='onefetch'
 alias mobilerun='adb devices && npx expo start --android --localhost'
 alias hyprd='hyprctl dispatch'
 alias resound='systemctl --user restart pipewire pipewire-pulse wireplumber'

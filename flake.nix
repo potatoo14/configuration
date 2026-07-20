@@ -62,7 +62,7 @@
             ./modules/desktop.nix
             ./modules/gaming.nix
             ./modules/rust.nix
-            ./modules/voice-call.nix
+            # ./modules/voice-call.nix
             ./modules/binary-cache.nix
 
             # home is built with the system

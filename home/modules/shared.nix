@@ -75,10 +75,6 @@ in {
         # relaysEnabled = false;
         urAccepted = -1;
       };
-      gui = {
-        user = "someone";
-        password = "password";
-      };
       devices = {
         "pc" = {id = "D57DRWT-RN6SG2H-4MRX4I5-VU4P3AF-IFTDBA5-ERNV2XD-LU3NMYU-TIYBSAA";};
         "laptop" = {id = "FVVYBWX-4SHRCJO-ZBUMK53-FYW2P5V-VV2BBUW-HKLN7CI-7ZNU3NA-HNKPAQV";};
@@ -106,6 +102,10 @@ in {
         "${config.home.homeDirectory}/nixos" = {
           id = "nixos";
           inherit devices;
+        };
+        "/mnt/hd/stuff/syncthing" = {
+          id = "anime sync";
+          devices = ["phone" "pc"];
         };
       };
     };
