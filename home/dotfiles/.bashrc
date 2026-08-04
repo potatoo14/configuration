@@ -37,6 +37,7 @@ export XMODIFIERS=@im=fcitx
 export ADW_DEBUG_COLOR_SCHEME=prefer-dark
 
 alias ff='fastfetch'
+alias of='onefetch --include-hidden'
 alias mobilerun='adb devices && npx expo start --android --localhost'
 alias hyprd='hyprctl dispatch'
 alias resound='systemctl --user restart pipewire pipewire-pulse wireplumber'
@@ -53,6 +54,7 @@ alias mkdir='mkdir -pv'
 alias gzip='gzip -v'
 alias fd='fd -HE /mnt'
 alias nt='nix-tree'
+alias ndev='nix develop'
 alias gits='git status'
 alias gita='git add'
 alias gitc='git commit'
@@ -73,6 +75,10 @@ alias sshpc='ssh user@192.168.18.4'
 alias heic2png='magick mogrify -format png *.heic'
 alias png2pdf='magick *.png out.pdf'
 
+hyprexec() {
+	hyprctl eval "custom_exec({'$*'})"
+}
+
 ns() {
 	# shellcheck disable=SC2046
 	nix shell --impure $(
@@ -85,20 +91,7 @@ nr() {
 	nix run --impure nixpkgs#"$1"
 }
 ngr() {
-	hyprctl dispatch exec "nix run --impure nixpkgs#$1"
-}
-
-hyprde() {
-	hyprctl dispatch exec "$@"
-}
-
-# replace home manager symlink with actual file for quick editing
-replace() {
-	cat "$1" >tmp
-	# doesn't really work, hm fucks up permissions
-	# perms=$(stat -c "%A" "$1")
-	# grep -q "$perms" && chmod "$perms" tmp
-	mv -f tmp "$1"
+	hyprexec "nix run --impure nixpkgs#$1"
 }
 
 imgfetch() {
@@ -114,7 +107,7 @@ imgfetch() {
 
 rvicinae() {
 	pgrep vicinae | xargs kill
-	hyprctl dispatch exec 'uwsm app -- vicinae server'
+	hyprexec 'vicinae server'
 }
 
 inspectexe() {

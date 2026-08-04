@@ -6,32 +6,34 @@
 -- ==========================================
 
 local SCRIPTS = os.getenv("HOME") .. "/.config/hypr/bin"
+local HOST_IS_PC = os.getenv("USER") == "user"
 
-function log(txt)
-  hl.notification.create({ text = txt, duration = 10000 })
-end
-
+-- function log(txt)
+--   hl.notification.create({ text = txt, duration = 10000 })
+-- end
 function mkScriptRunner(name)
   return function (args)
     return hl.dsp.exec_cmd(string.format("%s/%s %s", SCRIPTS, name, args))
   end
 end
-
 function multiBind(keys, bind)
   for _, key in ipairs(keys) do
     hl.bind(key, bind)
   end
 end
-
-function custom_exec(programs)
+function batchBind(mod, dispatcher, table)
+  for key, val in pairs(table) do
+    hl.bind(mod .. "+" .. key, dispatcher(val))
+  end
+end
+function customExec(programs)
   for _, program in ipairs(programs) do
     hl.exec_cmd("uwsm app -- " .. program)
   end
 end
-
 function reload()
   hl.exec_cmd("pkill waybar")
-  custom_exec({ "waybar" })
+  customExec({ "waybar" })
   hl.exec_cmd("hyprctl reload") -- cursed
 end
 
@@ -41,14 +43,18 @@ end
 
 hl.on("hyprland.start", function ()
   hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_RUNTIME_DIR")
-  custom_exec({
+  customExec({
     "swaync",
     "vicinae server",
     "waybar",
     "fcitx5",
     "easyeffects --gapplication-service",
-    "transmission-gtk"
+    "firefox",
+    SCRIPTS .. "/wallupdater.sh restore"
   })
+  if HOST_IS_PC then
+    customExec({ "transmission-gtk" })
+  end
 end)
 
 -- ==========================================
@@ -85,6 +91,9 @@ hl.config({
     rounding = 10,
     screen_shader = "~/.config/hypr/blue-light-filter.glsl"
   },
+  cursor = {
+    no_hardware_cursors = true -- to allow tearing
+  },
   debug = {
     damage_tracking = 0 -- fix shader refresh, it's a shit fix, i know
   },
@@ -102,7 +111,8 @@ hl.config({
     touchpad = {
       disable_while_typing = false,
       natural_scroll = true
-    }
+    },
+    accel_profile = "flat" -- i had been using mouse acceleration all along? it didn't felt like it
   },
   ecosystem = {
     no_update_news = true,
@@ -110,12 +120,23 @@ hl.config({
   }
 })
 
-for i = 1, 2 do -- idk why my mouse do this
-  hl.device({
-    name = "roccat-roccat-savu-" .. i,
-    sensitivity = -0.79
-  })
-end
+-- my mouse died
+hl.device({
+  name = "usb-optical-mouse-",
+  sensitivity = -0.7
+})
+batchBind(
+  "SUPER + MOD3",
+  function (dir)
+    return hl.dsp.exec_cmd("/home/user/Repos/wlrctl/result/bin/wlrctl pointer scroll " .. dir)
+  end,
+  {
+    w = "10 0",
+    a = "0 -10",
+    s = "-10 0",
+    d = "0 10"
+  }
+)
 
 -- ==========================================
 -- ANIMATIONS
@@ -164,35 +185,41 @@ hl.window_rule({
   center = true
 })
 
+function tear(keys)
+  for _, key in ipairs(keys) do
+    hl.window_rule({
+      match = { class = key },
+      immediate = true
+    })
+  end
+end
+tear({ "osu!", "ADanceOfFireAndIce" })
+
 -- ==========================================
 -- KEYBINDS
 -- ==========================================
 
-function bindApps(binds)
-  for key, app in pairs(binds) do
-    hl.bind("SUPER +" .. key, hl.dsp.exec_cmd("uwsm app -- " .. app))
-  end
-end
-bindApps({
-  z = "foot",
-  x = "foot btop",
-  e = "foot yazi",
-  f = "firefox",
-  c = "qalculate-gtk",
-  g = "easyeffects",
-  q = "vicinae toggle",
-})
+batchBind(
+  "SUPER",
+  function (app)
+    return hl.dsp.exec_cmd("uwsm app -- " .. app)
+  end,
+  {
+    z = "foot",
+    x = "foot btop",
+    e = "foot yazi",
+    f = "firefox",
+    c = "qalculate-gtk",
+    g = "easyeffects",
+    q = "vicinae toggle"
+  }
+)
 
 hl.bind("SUPER + grave", hl.dsp.window.close())
 hl.bind("SUPER + tab", hl.dsp.layout("togglesplit"))
--- hl.bind("SUPER + grave", hl.dsp.window.fullscreen())
--- hl.bind("MOD3 + grave", hl.dsp.window.float({ action = "toggle" }))
-
-function bindDirs(mod, dispatcher, table)
-  for key, val in pairs(table) do
-    hl.bind(mod .. "+" .. key, dispatcher(val))
-  end
-end
+hl.bind("SUPER + 1", hl.dsp.window.fullscreen())
+hl.bind("SUPER + 2", hl.dsp.window.float({ action = "toggle" }))
+hl.bind("SUPER + 3", hl.dsp.window.pin({ action = "toggle" }))
 
 local dirtable = {
   h = { direction = "left" },
@@ -200,10 +227,10 @@ local dirtable = {
   k = { direction = "up" },
   l = { direction = "right" }
 }
-bindDirs("SUPER", hl.dsp.focus, dirtable)
-bindDirs("SUPER + SHIFT", hl.dsp.window.move, dirtable)
+batchBind("SUPER", hl.dsp.focus, dirtable)
+batchBind("SUPER + SHIFT", hl.dsp.window.move, dirtable)
 
-bindDirs("SUPER + CONTROL", hl.dsp.window.resize, {
+batchBind("SUPER + CONTROL", hl.dsp.window.resize, {
   h = { x = -50, y = 0, relative = true },
   j = { x = 0, y = 50, relative = true },
   k = { x = 0, y = -50, relative = true },
@@ -218,11 +245,6 @@ bindDirs("SUPER + CONTROL", hl.dsp.window.resize, {
 for i = 1, 6 do
   hl.workspace_rule({ workspace = tostring(i), persistent = true })
 end
-
--- center at launch
-hl.on("hyprland.start", function ()
-  hl.dispatch(hl.dsp.focus({ workspace = "2" }))
-end)
 
 function move_grid(direction, move_window)
   ---@diagnostic disable-next-line: need-check-nil
@@ -261,13 +283,13 @@ end
 
 local windowtable = { w = "up", a = "left", s = "down", d = "right" }
 -- eager function eval shit on lua
-bindDirs("SUPER", function (val)
+batchBind("SUPER", function (val)
   return function ()
     move_grid(val)
   end
 end, windowtable
 )
-bindDirs("SUPER + SHIFT", function (val)
+batchBind("SUPER + SHIFT", function (val)
   return function ()
     move_grid(val, true)
   end
@@ -333,10 +355,11 @@ hl.bind("MOD3 + z", shader("-"))
 
 hl.bind("MOD3 + SUPER + q", hl.dsp.exec_cmd("hyprpicker -a"))
 
-hl.bind("SUPER + ALT + s", function ()
-  reload()
-end)
+hl.bind("SUPER + ALT + s", reload)
 hl.bind("SUPER + ALT + a", hl.dsp.exec_cmd("pkill waybar"))
 
 hl.bind("SUPER + ALT + z", hl.dsp.exec_cmd("roccatsavucontrol -a 1"))
 hl.bind("SUPER + ALT + x", hl.dsp.exec_cmd("roccatsavucontrol -a 2"))
+
+-- check tearing in the actual game
+hl.bind("SUPER + ALT + tab", hl.dsp.exec_cmd("hyprctl monitors > ~/monitors.txt"))

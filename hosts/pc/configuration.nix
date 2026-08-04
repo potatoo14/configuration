@@ -1,6 +1,5 @@
 {
   pkgs,
-  pkgs-stable,
   ...
 }: {
   imports = [./hardware-configuration.nix];
@@ -21,9 +20,6 @@
     wireless.enable = false;
   };
 
-  # roccat udev rules, so it can acess hardware
-  services.udev.packages = [pkgs-stable.roccat-tools];
-
   programs = {
     gamemode.settings.gpu = {
       apply_gpu_optimisations = "accept-responsibility";
@@ -35,27 +31,22 @@
     };
   };
 
-  environment.systemPackages = with pkgs;
-    [
-      #-terminal-#
-      btrbk
-      ntfs3g
-      ddcutil
-      ddcui
-      android-tools
-      # distrobox
-      # flatpak-builder
+  environment.systemPackages = with pkgs; [
+    #-terminal-#
+    btrbk
+    ntfs3g
+    ddcutil
+    ddcui
+    android-tools
 
-      #-apps-#
-      anki-bin
-      transmission_4-gtk
-      mpv # with yt-dlp
-      mpvScripts.mpris
-      universal-android-debloater
-      # aseprite
-      # prismlauncher
-    ]
-    ++ [pkgs-stable.roccat-tools];
+    #-apps-#
+    anki-bin
+    transmission_4-gtk
+    mpv # with yt-dlp
+    mpvScripts.mpris
+    universal-android-debloater
+    # aseprite
+  ];
 
   # Open ports in the firewall.
   # for transmission, but isp locks down router, unfortuanely >:(

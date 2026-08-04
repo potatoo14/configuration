@@ -1,16 +1,11 @@
 {
   lib,
-  pkgs,
   config,
   modulesPath,
   ...
 }: {
 
   boot = {
-    # it's compiling for some reason, probably something broke the build upstream
-    # kernelPackages = pkgs.linuxPackages_zen;
-    kernelPackages = pkgs.linuxPackages_latest;
-
     loader = {
       systemd-boot.enable = true;
       systemd-boot.consoleMode = "max";

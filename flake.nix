@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-25.11";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -9,19 +8,12 @@
     };
 
     fenix.url = "github:nix-community/fenix/monthly";
-
-    android-nixpkgs = {
-      url = "github:tadfisher/android-nixpkgs/stable";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
   outputs = {
-    self,
     nixpkgs,
-    nixpkgs-stable,
     home-manager,
-    fenix,
     ...
   } @ inputs: let
     globalSharedState = {
@@ -55,22 +47,15 @@
           specialArgs = {
             inherit inputs;
             inherit sharedState;
-            pkgs-stable = import nixpkgs-stable {
-              system = "x86_64-linux";
-              overlays = [(import ./modules/overlay.nix)];
-            };
           };
           modules = [
             ./hosts/pc/configuration.nix
-            ./modules/shared.nix
+            ./modules/cachyos-kernel.nix
+            ./modules/base.nix
             ./modules/desktop.nix
             ./modules/gaming.nix
-            ./modules/dev/c-family.nix
-            ./modules/dev/rust.nix
-            ./modules/dev/android-expo.nix
-            ./modules/dev/matlab.nix
-            ./modules/dev/unity.nix
-            ./modules/voice-call.nix
+            ./modules/rust.nix
+            # ./modules/voice-call.nix
             ./modules/binary-cache.nix
 
             # home is built with the system
@@ -82,8 +67,7 @@
                   users.user = {
                     imports = [
                       ./home/hosts/pc/host.nix
-                      ./home/modules/shared.nix
-                      ./home/modules/wallupdater.nix
+                      ./home/modules/base.nix
                     ];
                   };
                   extraSpecialArgs = {
@@ -105,21 +89,12 @@
           specialArgs = {
             inherit inputs;
             inherit sharedState;
-            pkgs-stable = import nixpkgs-stable {
-              system = "x86_64-linux";
-              overlays = [(import ./modules/overlay.nix)];
-            };
           };
           modules = [
             ./hosts/laptop/configuration.nix
-            ./modules/shared.nix
+            ./modules/cachyos-kernel.nix
+            ./modules/base.nix
             ./modules/desktop.nix
-            ./modules/dev/c-family.nix
-            ./modules/dev/rust.nix
-            ./modules/dev/matlab.nix
-            ./modules/dev/android-expo.nix
-            ./modules/virt-manager.nix
-            ./modules/mongo.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -128,8 +103,7 @@
                   users.potato = {
                     imports = [
                       ./home/hosts/laptop/host.nix
-                      ./home/modules/shared.nix
-                      ./home/modules/wallupdater.nix
+                      ./home/modules/base.nix
                     ];
                   };
                   extraSpecialArgs = {

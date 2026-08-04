@@ -7,11 +7,12 @@
   ...
 }: let
   defVicinaeExtesions = list: let
-    repoSrc = pkgs.fetchFromGitHub { # hopefully caching isn't invalidated anymore, fuck
+    repoSrc = pkgs.fetchFromGitHub {
+      # hopefully caching isn't invalidated anymore, fuck
       owner = "vicinaehq";
       repo = "extensions";
-      rev = "cf30b80f619282d45b1748eb76e784a4f875bb01";
-      hash = "sha256-KwNv+THKbNUey10q26NZPDMSzYTObRHaSDr81QP9CPY=";
+      rev = "afb84fe4b5253777ff82db8e19e6cc0c9b7f811f";
+      hash = "sha256-Non+frT3WG0TN60zCq63m8+d7yNmCCMaI363kZaDmPM=";
     };
   in
     map (name:
@@ -33,15 +34,12 @@ in {
   # treating this like gnu stow
   home.file =
     {
-      # "Obsidian/.obsidian.vimrc".source = "${helix-vim}/helix.vim";
-
-      # "rust-docs".source = "${pkgs.rustc.doc}/share/doc/docs/html/index.html";
-
-      # ".config/fcitx5" = {
-      #   # idk if it's going to work well, more reproducibility is nice anyway (fcitx5)
-      #   source = ./dotfiles/.config/fcitx5;
-      #   recursive = true;
-      # };
+      # for hyprland.lua autocompletion (because of how nix doesn't follow FHS)
+      "nixos/.emmyrc.json".text = builtins.toJSON {
+        workspace = {
+          library = ["${pkgs.hyprland}/share/hypr/stubs"];
+        };
+      };
     }
     // linkDotfiles [
       ".bashrc"
@@ -77,10 +75,6 @@ in {
         # relaysEnabled = false;
         urAccepted = -1;
       };
-      gui = {
-        user = "someone";
-        password = "password";
-      };
       devices = {
         "pc" = {id = "D57DRWT-RN6SG2H-4MRX4I5-VU4P3AF-IFTDBA5-ERNV2XD-LU3NMYU-TIYBSAA";};
         "laptop" = {id = "FVVYBWX-4SHRCJO-ZBUMK53-FYW2P5V-VV2BBUW-HKLN7CI-7ZNU3NA-HNKPAQV";};
@@ -109,6 +103,10 @@ in {
           id = "nixos";
           inherit devices;
         };
+        "/mnt/hd/stuff/syncthing" = {
+          id = "anime sync";
+          devices = ["phone" "pc"];
+        };
       };
     };
   };
@@ -131,19 +129,26 @@ in {
     };
   };
 
-  home.pointerCursor = {
+  home.pointerCursor = let
+    name = "miku-cursor";
+  in {
+    enable = true;
     gtk.enable = true;
-    # x11.enable = true;
-    package = pkgs.qogir-icon-theme;
-    name = "Qogir";
     size = 24;
+    inherit name;
+    package = pkgs.runCommand name {} ''
+      mkdir -p $out/share/icons
+      ln -s ${pkgs.fetchzip {
+        url = "https://github.com/supermariofps/hatsune-miku-windows-linux-cursors/releases/download/1.2.6/miku-cursor-linux.tar.xz";
+        sha256 = "sha256-qxWhzTDzjMxK7NWzpMV9EMuF5rg9gnO8AZlc1J8CRjY=";
+      }} $out/share/icons/${name};
+    '';
   };
 
   gtk = {
     enable = true;
 
-    # gtk4 was never intended to be themed (fixing evaluation warning)
-    gtk4.theme = null;
+    gtk4.theme = config.gtk.theme; # theming is hard
 
     theme = {
       package = pkgs.catppuccin-gtk.override {
@@ -157,11 +162,6 @@ in {
       package = pkgs.qogir-icon-theme;
       name = "Qogir";
     };
-
-    # font = {
-    #   name = "Sans";
-    #   size = 11;
-    # };
   };
 
   # i still have to open the gui and configure stuff manually,
@@ -184,5 +184,4 @@ in {
       color-scheme = "prefer-dark";
     };
   };
-
 }

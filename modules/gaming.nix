@@ -26,10 +26,10 @@
     (final: prev: {
       dw-proton-bin = prev.proton-ge-bin.overrideAttrs (oldAttrs: rec {
         pname = "dw-proton-bin";
-        version = "dwproton-11.0-2";
+        version = "dwproton-11.0-5";
         src = prev.fetchzip {
           url = "https://dawn.wine/dawn-winery/dwproton/releases/download/${version}/${version}-x86_64.tar.xz";
-          hash = "sha256-3AxBr8fQh4bbAsdSSZuyQR2GOz78vdhC6jJbLmiYEXY=";
+          hash = "sha256-2x4xotJ2aJYbg+G2TDPqyU7uuoc/hZQon9CA6SFGin0=";
         };
         preFixup = "";
       });
@@ -46,13 +46,7 @@
   ];
   environment.systemPackages = with pkgs; [
     mangohud
-    # heroic
-    # osu-lazer-bin
-    # gamescope
     # (prismlauncher.override {jdks = [jdk21];})
     # innoextract # can extract gog installers without windows or wine
-    # https://github.com/NixOS/nixpkgs/issues/304832
-    # nobody wants to maintain rimsort, it got closed b4 merging
-    # rimsort-bin
   ];
 }
