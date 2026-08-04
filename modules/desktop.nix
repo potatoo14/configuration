@@ -15,9 +15,6 @@
     ];
   };
 
-  # setting up qt theme is a pain outside of kde
-  qt.platformTheme = "qt5ct";
-
   # hint electron apps to use wayland:
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
@@ -34,7 +31,6 @@
   programs = {
     hyprland = {
       enable = true;
-      # package = pkgs.hyprland.override {debug = false;};
       systemd.setPath.enable = true; # fix xdg-open
       withUWSM = true;
     };
@@ -59,7 +55,6 @@
       support32Bit = true;
     };
     pulse.enable = true;
-    #jack.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -70,11 +65,9 @@
     playerctl
     hyprpicker
     wl-clipboard
-    # wev
+    wev
     wl-gammactl
     swaynotificationcenter
-    # i don't really need a polkit agent
-    # hyprpolkitagent # requires hyprland-qt-support to work properly
     mesa-demos # i like to have glxinfo
     # pandoc # markdown to odt converter
 
@@ -83,7 +76,10 @@
     pavucontrol
     easyeffects
     obsidian
-    android-file-transfer
+    (android-file-transfer.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.wrapGAppsHook3];
+      buildInputs = oldAttrs.buildInputs ++ [pkgs.gsettings-desktop-schemas];
+    }))
     # dconf-editor
     # rnote
     # gparted

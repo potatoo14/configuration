@@ -37,7 +37,7 @@ export XMODIFIERS=@im=fcitx
 export ADW_DEBUG_COLOR_SCHEME=prefer-dark
 
 alias ff='fastfetch'
-alias of='onefetch'
+alias of='onefetch --include-hidden'
 alias mobilerun='adb devices && npx expo start --android --localhost'
 alias hyprd='hyprctl dispatch'
 alias resound='systemctl --user restart pipewire pipewire-pulse wireplumber'
@@ -54,6 +54,7 @@ alias mkdir='mkdir -pv'
 alias gzip='gzip -v'
 alias fd='fd -HE /mnt'
 alias nt='nix-tree'
+alias ndev='nix develop'
 alias gits='git status'
 alias gita='git add'
 alias gitc='git commit'

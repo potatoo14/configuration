@@ -16,8 +16,6 @@
     (inputs.fenix.packages.${stdenv.hostPlatform.system}.complete.withComponents [
       "cargo"
       "clippy"
-      "rust-src"
-      # "rustc-codegen-cranelift-preview"
       "rustfmt"
       "rust-analyzer-preview"
     ])

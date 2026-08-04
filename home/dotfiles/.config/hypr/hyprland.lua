@@ -49,10 +49,11 @@ hl.on("hyprland.start", function ()
     "waybar",
     "fcitx5",
     "easyeffects --gapplication-service",
-    "firefox"
+    "firefox",
+    SCRIPTS .. "/wallupdater.sh restore"
   })
   if HOST_IS_PC then
-    customExec({"transmission-gtk"})
+    customExec({ "transmission-gtk" })
   end
 end)
 
@@ -110,7 +111,8 @@ hl.config({
     touchpad = {
       disable_while_typing = false,
       natural_scroll = true
-    }
+    },
+    accel_profile = "flat" -- i had been using mouse acceleration all along? it didn't felt like it
   },
   ecosystem = {
     no_update_news = true,
@@ -118,12 +120,23 @@ hl.config({
   }
 })
 
-for i = 1, 2 do -- idk why my mouse do this
-  hl.device({
-    name = "roccat-roccat-savu-" .. i,
-    sensitivity = -0.79
-  })
-end
+-- my mouse died
+hl.device({
+  name = "usb-optical-mouse-",
+  sensitivity = -0.7
+})
+batchBind(
+  "SUPER + MOD3",
+  function (dir)
+    return hl.dsp.exec_cmd("/home/user/Repos/wlrctl/result/bin/wlrctl pointer scroll " .. dir)
+  end,
+  {
+    w = "10 0",
+    a = "0 -10",
+    s = "-10 0",
+    d = "0 10"
+  }
+)
 
 -- ==========================================
 -- ANIMATIONS
@@ -171,14 +184,16 @@ hl.window_rule({
   float = true,
   center = true
 })
-hl.window_rule({
-  match = { class = "osu!" },
-  immediate = true
-})
-hl.window_rule({
-  match = { class = "ADanceOfFireAndIce" },
-  immediate = true
-})
+
+function tear(keys)
+  for _, key in ipairs(keys) do
+    hl.window_rule({
+      match = { class = key },
+      immediate = true
+    })
+  end
+end
+tear({ "osu!", "ADanceOfFireAndIce" })
 
 -- ==========================================
 -- KEYBINDS

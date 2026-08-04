@@ -46,13 +46,7 @@
   ];
   environment.systemPackages = with pkgs; [
     mangohud
-    # heroic
-    # osu-lazer-bin
-    # gamescope
     # (prismlauncher.override {jdks = [jdk21];})
     # innoextract # can extract gog installers without windows or wine
-    # https://github.com/NixOS/nixpkgs/issues/304832
-    # nobody wants to maintain rimsort, it got closed b4 merging
-    # rimsort-bin
   ];
 }

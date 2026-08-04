@@ -10,15 +10,6 @@
     # lazy-trees = true;
     experimental-features = ["nix-command" "flakes"];
     trusted-users = ["root" "@wheel"];
-    # it's anoying, only add, when useful:
-    # --option extra-substituters http://192.168.18.4:5000
-    # --option extra-trusted-public-keys local-1://mjrvGM94DuOP9onF4jbICyLmt5RqfFpra+ciY2vsg=
-    # extra-substituters = [
-    #   "http://192.168.18.4:5000"
-    # ];
-    # extra-trusted-public-keys = [
-    #   "local-1://mjrvGM94DuOP9onF4jbICyLmt5RqfFpra+ciY2vsg="
-    # ];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -27,8 +18,6 @@
   # for syncthing
   networking.firewall.allowedTCPPorts = [22000 3000];
   networking.firewall.allowedUDPPorts = [21027 22000];
-
-  nixpkgs.overlays = [(import ./overlay.nix)];
 
   services.getty.autologinUser = sharedState.username;
 
@@ -41,7 +30,6 @@
     };
     groups = {
       ${sharedState.username}.gid = 1000; # add a group "user" to keep compatibility with arch
-      roccat = {}; # roccat group, for udev rules
     };
   };
 
@@ -131,6 +119,7 @@
     mediainfo
     ffmpeg
     nix-index
+    wlrctl
 
     #-language-utils-#
     git

@@ -1,3 +1,5 @@
+# https://github.com/NixOS/nixpkgs/issues/304832
+# nobody wants to maintain rimsort, it got closed b4 merging
 {
   lib,
   fetchzip,
