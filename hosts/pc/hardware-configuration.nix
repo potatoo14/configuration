@@ -14,6 +14,8 @@
     };
   };
 
+  hardware.bluetooth.enable = true;
+
   # make that crusty old gpu work properly (i hope)
   # idk what this actually does
   # hardware.amdgpu.legacySupport.enable = true;

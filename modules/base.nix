@@ -1,5 +1,5 @@
 {
-  sharedState,
+  extraArgs,
   inputs,
   lib,
   pkgs,
@@ -19,17 +19,17 @@
   networking.firewall.allowedTCPPorts = [22000 3000];
   networking.firewall.allowedUDPPorts = [21027 22000];
 
-  services.getty.autologinUser = sharedState.username;
+  services.getty.autologinUser = extraArgs.username;
 
   users = {
-    users.${sharedState.username} = {
+    users.${extraArgs.username} = {
       isNormalUser = true;
-      group = sharedState.username;
-      extraGroups = sharedState.extraGroups;
+      group = extraArgs.username;
+      extraGroups = extraArgs.extraGroups;
       initialPassword = "changeme"; # nice to have
     };
     groups = {
-      ${sharedState.username}.gid = 1000; # add a group "user" to keep compatibility with arch
+      ${extraArgs.username}.gid = 1000; # add a group "user" to keep compatibility with arch
     };
   };
 
@@ -89,7 +89,7 @@
   programs = {
     nh = {
       enable = true;
-      flake = "/home/${sharedState.username}/nixos";
+      flake = "/home/${extraArgs.username}/nixos";
     };
   };
 
@@ -120,6 +120,8 @@
     ffmpeg
     nix-index
     wlrctl
+    nix-auth
+    bubblewrap
 
     #-language-utils-#
     git
@@ -140,11 +142,11 @@
   ];
 
   # automatic garbage collection
-  programs.nh.clean = {
-    enable = true;
-    extraArgs = "--keep-since 7d";
-    dates = "daily";
-  };
+  # programs.nh.clean = {
+  #   enable = true;
+  #   extraArgs = "--keep-since 7d";
+  #   dates = "daily";
+  # };
 
   # save space by hardlinking identical files
   nix.optimise = {

@@ -46,6 +46,9 @@
     mpvScripts.mpris
     universal-android-debloater
     # aseprite
+    azahar
+    godot
+    blender
   ];
 
   # Open ports in the firewall.

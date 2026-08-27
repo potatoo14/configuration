@@ -4,5 +4,6 @@
     mold
     gdb
     clang-tools
+    gnumake
   ];
 }

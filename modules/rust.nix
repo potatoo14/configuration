@@ -18,6 +18,7 @@
       "clippy"
       "rustfmt"
       "rust-analyzer-preview"
+      "rust-src"
     ])
     gcc
     mold

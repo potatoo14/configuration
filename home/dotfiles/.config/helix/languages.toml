@@ -12,12 +12,13 @@ command = "nixd" # one day i will learn to configure this shit
 name = "bash"
 formatter = { command = "shfmt" }
 
+# python lsp is aways half borked
 [[language]]
 name = "python"
 language-servers = ["basedpyright", "ruff"]
 formatter = { command = "ruff", args = ["format", "--line-length", "88", "-"] }
 [language-server.basedpyright.config.python.analysis]
-typeCheckingMode = "basic"
+typeCheckingMode = "strict"
 [language-server.ruff]
 command = "ruff"
 indent = { tab-width = 2, unit = "  " }
@@ -45,7 +46,6 @@ language-servers = [
 name = "html"
 language-servers = ["vscode-html-language-server"]
 formatter = { command = 'prettier', args = ["--parser", "html"] }
-
 
 [[language]]
 name = "css"
@@ -101,25 +101,6 @@ formatter = { command = 'prettier', args = ["--parser", "yaml"] }
 name = "toml"
 formatter = { command = "taplo", args = ["fmt", "-"] }
 
-[language-server.matlab-ls]
-command = "matlab-language-server"
-args = ["--stdio"]
-
-[language-server.matlab-ls.config.MATLAB]
-indexWorkspace = false
-installPath = "/run/current-system/sw/bin"
-matlabConnectionTiming = "onStart"
-telemetry = false
-
-[[language]]
-name = "matlab"
-scope = "source.m"
-file-types = ["m"]
-language-servers = ["matlab-ls"]
-comment-token = "%"
-shebangs = ["octave-cli", "matlab"]
-indent = { tab-width = 2, unit = "  " }
-
 [language-server.rust-analyzer.config.cargo]
 # This tells rust-analyzer to use `target/rust-analyzer` 
 # for all of its background checking and proc-macro compiling.
@@ -134,3 +115,10 @@ name = "lua"
 language-servers = ["emmylua"]
 [language-server.emmylua]
 command = "emmylua_ls"
+
+[language-server.godot]
+command = "nc"
+args = [ "127.0.0.1", "6005"]
+[[language]]
+name = "gdscript"
+language-servers = [ "godot" ]

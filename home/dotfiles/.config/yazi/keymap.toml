@@ -28,8 +28,7 @@ prepend_keymap = [
 	{ on = [ "g", "t" ],       run = "cd /mnt/hd/stuff/Torrent",    desc = "torrents" },
 	{ on = [ "g", "<Space>" ], run = "cd --interactive",            desc = "interactively" },
 
-	{ on = "<C-s>",   run = 'shell "$SHELL" --block --confirm',                  desc = "Open shell here" },
-	{ on = "<C-S-s>", run = 'shell "DONT_NIX_SHELL=1 $SHELL" --block --confirm', desc = "Open shell here" },
+	{ on = "<C-s>",   run = 'shell foot --orphan',                               desc = "Open new terminal window here" },
 	{ on = "<C-q>",   run = '''shell 'ripdrag "$@"' --confirm''',                desc = "Drag and drop" },
 	{ on = "<C-h>",   run = "hardlink",                                          desc = "Hardlink yanked files" },
 	{ on = "T",       run = "plugin toggle-pane min-preview",                    desc = "Show or hide the preview pane" },

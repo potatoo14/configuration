@@ -1,20 +1,16 @@
-#
-#  ~/.bashrc
-#
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# [[ ":$PATH:" != *":$HOME/.npm/bin:"* ]] && PATH="$HOME/.npm/bin:${PATH}"
 [[ ":$PATH:" != *":$HOME/.cargo/bin:"* ]] && PATH="$HOME/.cargo/bin:${PATH}"
 
 PS1='\[\e[38;5;114m\]\w\[\e[0m\] \[\e[38;5;230m\]>\[\e[0m\] '
 
 # remove these misterious file that just crop up
-rm ~/.bash_history-*.tmp &> /dev/null
+rm ~/.bash_history-*.tmp &>/dev/null
 
 # unset HISTFILE
 shopt -s dotglob # hidden files exist
+stty -ixon       # disable Ctrl+s stop output (any enable something else for some reason)
 
 # export SYSTEMD_PAGER=
 export EDITOR="hx"
@@ -24,9 +20,6 @@ export NIXPKGS_ALLOW_UNFREE=1
 # use color for man pages
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-P -c"
-
-# flatpak stuff
-# export XDG_DATA_DIRS="$XDG_DATA_DIRS:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share"
 
 # japanese input engine
 export GTK_IM_MODULE=fcitx
@@ -59,6 +52,7 @@ alias gits='git status'
 alias gita='git add'
 alias gitc='git commit'
 alias gitcam='git commit --amend'
+alias gitpop='git reset --soft HEAD~1'
 alias gitp='git push'
 alias gitpf='git push -f'
 alias gitpr='git pull --rebase'
@@ -66,7 +60,7 @@ alias gitds='git diff --staged'
 alias gitd='git diff'
 alias gitg='git grep'
 alias gitl='git log'
-alias gitus='git restore --staged'
+alias gitunstage='git restore --staged'
 alias lsblk='lsblk -f'
 alias b='bluetoothctl'
 alias uplap='nh os boot -- --option extra-substituters http://192.168.18.4:5000 --option extra-trusted-public-keys local-1://mjrvGM94DuOP9onF4jbICyLmt5RqfFpra+ciY2vsg='
@@ -115,14 +109,14 @@ inspectexe() {
 }
 
 # https://github.com/nix-community/nix-index-database ad-hoc download
-download_nixpkgs_cache_index () {
-  filename="index-$(uname -m | sed 's/^arm64$/aarch64/')-$(uname | tr "[:upper:]" "[:lower:]")"
-  mkdir -p ~/.cache/nix-index && cd ~/.cache/nix-index || exit
-  wget -q -N "https://github.com/nix-community/nix-index-database/releases/latest/download/$filename"
-  ln -f "$filename" files
+download_nixpkgs_cache_index() {
+	filename="index-$(uname -m | sed 's/^arm64$/aarch64/')-$(uname | tr "[:upper:]" "[:lower:]")"
+	mkdir -p ~/.cache/nix-index && cd ~/.cache/nix-index || exit
+	wget -q -N "https://github.com/nix-community/nix-index-database/releases/latest/download/$filename"
+	ln -f "$filename" files
 }
 
 # auto enter nix-shell when apropriate
-[[ -z $DONT_NIX_SHELL ]] && [[ -z $IN_NIX_SHELL ]] && [[ -f ./shell.nix ]] && nix-shell
+# [[ -z $DONT_NIX_SHELL ]] && [[ -z $IN_NIX_SHELL ]] && [[ -f ./shell.nix ]] && nix-shell
 
 # fastfetch

@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, extraArgs, ...}: {
   programs = {
     # using gamemode instead of manually setting cpu governor
     gamemode = {
@@ -13,7 +13,7 @@
     };
     steam = {
       enable = true;
-      extraCompatPackages = [pkgs.dw-proton-bin];
+      extraCompatPackages = if extraArgs.username == "user" then [pkgs.dw-proton-bin] else [];
       package = pkgs.steam.override {
         extraEnv = {
           MANGOHUD = true;

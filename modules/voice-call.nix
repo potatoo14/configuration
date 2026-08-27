@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [
     mumble
     qpwgraph
-    vesktop
+    discord
   ];
   services.murmur = {
     enable = true;

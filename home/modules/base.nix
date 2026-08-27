@@ -1,7 +1,7 @@
 # hm is underwhelming tbh, it's kinda pointless, but sometimes handy
 {
   config,
-  sharedState,
+  extraArgs,
   pkgs,
   lib,
   ...
@@ -28,8 +28,8 @@
     (path: {source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/dotfiles/${path}";});
 in {
   home = {
-    homeDirectory = "/home/${sharedState.username}";
-    username = sharedState.username;
+    homeDirectory = "/home/${extraArgs.username}";
+    username = extraArgs.username;
   };
   # treating this like gnu stow
   home.file =
