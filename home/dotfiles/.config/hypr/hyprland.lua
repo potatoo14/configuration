@@ -36,6 +36,34 @@ function reload()
   customExec({ "waybar" })
   hl.exec_cmd("hyprctl reload") -- cursed
 end
+function setEnv(vars)
+  for key, val in pairs(vars) do
+    hl.env(key, val)
+  end
+end
+function animate(animations)
+  for leaf, val in pairs(animations) do
+    -- If val is a table, extract [1] and [2]. Otherwise, val is just the speed.
+    local speed = type(val) == "table" and val[1] or val
+    local style = type(val) == "table" and val[2] or nil
+
+    hl.animation({
+      leaf = leaf,
+      enabled = true,
+      speed = speed,
+      bezier = "sharp",
+      style = style
+    })
+  end
+end
+function tear(keys)
+  for _, key in ipairs(keys) do
+    hl.window_rule({
+      match = { class = key },
+      immediate = true
+    })
+  end
+end
 
 -- ==========================================
 -- AUTOSTART
@@ -52,20 +80,15 @@ hl.on("hyprland.start", function ()
     "firefox",
     SCRIPTS .. "/wallupdater.sh restore"
   })
-  if HOST_IS_PC then
-    customExec({ "transmission-gtk" })
-  end
+  -- if HOST_IS_PC then
+  --   customExec({ "transmission-gtk" })
+  -- end
 end)
 
 -- ==========================================
 -- ENVIRONMENT VARIABLES
 -- ==========================================
 
-function setEnv(vars)
-  for key, val in pairs(vars) do
-    hl.env(key, val)
-  end
-end
 setEnv({
   XDG_CURRENT_DESKTOP = "Hyprland",
   QT_QPA_PLATFORMTHEME = "qt5ct",
@@ -120,44 +143,21 @@ hl.config({
   }
 })
 
+-- ==========================================
+-- DEVICE CONFIG
+-- ==========================================
+
 -- my mouse died
 hl.device({
   name = "usb-optical-mouse-",
   sensitivity = -0.7
 })
-batchBind(
-  "SUPER + MOD3",
-  function (dir)
-    return hl.dsp.exec_cmd("/home/user/Repos/wlrctl/result/bin/wlrctl pointer scroll " .. dir)
-  end,
-  {
-    w = "10 0",
-    a = "0 -10",
-    s = "-10 0",
-    d = "0 10"
-  }
-)
 
 -- ==========================================
 -- ANIMATIONS
 -- ==========================================
 
 hl.curve("sharp", { type = "bezier", points = { { 0, 0.9 }, { 0, 1.0 } } })
-function animate(animations)
-  for leaf, val in pairs(animations) do
-    -- If val is a table, extract [1] and [2]. Otherwise, val is just the speed.
-    local speed = type(val) == "table" and val[1] or val
-    local style = type(val) == "table" and val[2] or nil
-
-    hl.animation({
-      leaf = leaf,
-      enabled = true,
-      speed = speed,
-      bezier = "sharp",
-      style = style
-    })
-  end
-end
 animate({
   windows = 4,
   windowsOut = 5,
@@ -185,14 +185,6 @@ hl.window_rule({
   center = true
 })
 
-function tear(keys)
-  for _, key in ipairs(keys) do
-    hl.window_rule({
-      match = { class = key },
-      immediate = true
-    })
-  end
-end
 tear({ "osu!", "ADanceOfFireAndIce" })
 
 -- ==========================================

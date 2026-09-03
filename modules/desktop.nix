@@ -75,7 +75,6 @@
     qalculate-gtk
     pavucontrol
     easyeffects
-    obsidian
     (android-file-transfer.overrideAttrs (oldAttrs: {
       nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.wrapGAppsHook3];
       buildInputs = oldAttrs.buildInputs ++ [pkgs.gsettings-desktop-schemas];

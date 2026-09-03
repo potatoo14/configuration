@@ -5,7 +5,7 @@
 }: let
   linkLocalDotfiles = files:
     lib.genAttrs files
-    (path: {source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/hosts/pc/${baseNameOf path}";});
+    (path: {source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/sync/nixos/home/hosts/pc/${baseNameOf path}";});
 in {
   home.file = linkLocalDotfiles [
     ".cargo/config.toml"

@@ -89,7 +89,7 @@
   programs = {
     nh = {
       enable = true;
-      flake = "/home/${extraArgs.username}/nixos";
+      flake = "/home/${extraArgs.username}/sync/nixos";
     };
   };
 

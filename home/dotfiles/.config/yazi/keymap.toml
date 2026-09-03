@@ -5,11 +5,6 @@
 [mgr]
 prepend_keymap = [
 
-	# xdg-trash is borked on btrfs subvolumes
-	# https://www.reddit.com/r/btrfs/comments/ul2t9g/no_trash_on_btrfs_subvolumes_other_than_root_and/
-	# https://gitlab.gnome.org/GNOME/glib/-/issues/1885
-	{ on = "d",                run = "remove --permanently",        desc = "Permanently delete selected files" },
-
 	{ on = [ "g", "h" ],       run = "cd ~",                        desc = "home" },
 	{ on = [ "g", "c" ],       run = "cd ~/.config",                desc = "config" },
 	{ on = [ "g", "D" ],       run = "cd ~/nixos/home/dotfiles",    desc = "dotfiles" },

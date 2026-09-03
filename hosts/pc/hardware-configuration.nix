@@ -65,45 +65,21 @@
   # don't know if i use compression or not
   # it can be faster than without if io bandwith is low enough
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/238b7c3d-ae23-497e-a439-a17a772b0b7c";
+    device = "/dev/disk/by-uuid/027c018f-f392-4c28-a2ff-91446b169155";
     fsType = "btrfs";
-    options = ["subvol=root-nixos" "noatime" "compress=zstd:1"];
+    options = ["subvol=root" "noatime" "compress=zstd:3"];
   };
 
   fileSystems."/home/user" = {
-    device = "/dev/disk/by-uuid/238b7c3d-ae23-497e-a439-a17a772b0b7c";
+    device = "/dev/disk/by-uuid/027c018f-f392-4c28-a2ff-91446b169155";
     fsType = "btrfs";
-    options = ["subvol=home/user" "noatime" "compress=zstd:1"];
+    options = ["subvol=user" "noatime" "compress=zstd:3"];
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B7BE-9208";
+    device = "/dev/disk/by-uuid/07AA-9649";
     fsType = "vfat";
-    options = ["fmask=0137" "dmask=0027" "noatime" "nofail" "x-systemd.device-timeout=10"];
-  };
-
-  fileSystems."/mnt/hd" = {
-    device = "/dev/disk/by-uuid/027c018f-f392-4c28-a2ff-91446b169155";
-    fsType = "btrfs";
-    options = ["noatime" "nofail" "x-systemd.device-timeout=10" "compress=zstd:3"];
-  };
-
-  fileSystems."/mnt/ssd" = {
-    device = "/dev/disk/by-uuid/238b7c3d-ae23-497e-a439-a17a772b0b7c";
-    fsType = "btrfs";
-    options = ["noatime" "compress=zstd:1"];
-  };
-
-  fileSystems."/mnt/windows" = {
-    device = "/dev/disk/by-uuid/1C5432CE5432AA82";
-    fsType = "lowntfs-3g";
-    options = ["noatime" "windows_names" "uid=1000" "gid=1000" "dmask=022" "fmask=133" "nofail" "x-systemd.device-timeout=10"];
-  };
-
-  fileSystems."/mnt/windows-hd" = {
-    device = "/dev/disk/by-uuid/6EFF33890944D604";
-    fsType = "lowntfs-3g";
-    options = ["noatime" "windows_names" "uid=1000" "gid=1000" "dmask=022" "fmask=133" "nofail" "x-systemd.device-timeout=10"];
+    options = ["fmask=0137" "dmask=0027" "noatime"];
   };
 
   # swapDevices = [ ];

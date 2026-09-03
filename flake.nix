@@ -36,10 +36,10 @@
           ./modules/cachyos-kernel.nix
           ./modules/base.nix
           ./modules/desktop.nix
-          ./modules/gaming.nix
-          ./modules/rust.nix
+          # ./modules/gaming.nix
+          # ./modules/rust.nix
           ./modules/voice-call.nix
-          ./modules/binary-cache.nix
+          # ./modules/binary-cache.nix
         ];
         hm-modules = [
           ./home/hosts/pc/host.nix

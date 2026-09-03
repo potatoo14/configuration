@@ -6,26 +6,11 @@
   lib,
   ...
 }: let
-  defVicinaeExtesions = list: let
-    repoSrc = pkgs.fetchFromGitHub {
-      # hopefully caching isn't invalidated anymore, fuck
-      owner = "vicinaehq";
-      repo = "extensions";
-      rev = "afb84fe4b5253777ff82db8e19e6cc0c9b7f811f";
-      hash = "sha256-Non+frT3WG0TN60zCq63m8+d7yNmCCMaI363kZaDmPM=";
-    };
-  in
-    map (name:
-      config.lib.vicinae.mkExtension {
-        name = name;
-        src = "${repoSrc}/extensions/${name}";
-      })
-    list;
   defYaziPlugins = plugins: lib.genAttrs plugins (plugin: pkgs.yaziPlugins."${plugin}");
   # i forgot to say that mkOutOfStoreSymlink behaves different with flakes because this whole repo is copied to the store before being evaluated, so the symlinks point to the store instead of this repo, misleading name, i know (i don't remeber the github links)
   linkDotfiles = files:
     lib.genAttrs files
-    (path: {source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos/home/dotfiles/${path}";});
+    (path: {source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/sync/nixos/home/dotfiles/${path}";});
 in {
   home = {
     homeDirectory = "/home/${extraArgs.username}";
@@ -76,37 +61,21 @@ in {
         urAccepted = -1;
       };
       devices = {
-        "pc" = {id = "D57DRWT-RN6SG2H-4MRX4I5-VU4P3AF-IFTDBA5-ERNV2XD-LU3NMYU-TIYBSAA";};
+        "pc" = {id = "5QYUS43-RB7TGFU-7O6RBQR-CVQR73M-FOTGT6J-KBKLGVS-OL65YAH-JXYGJQC";};
         "laptop" = {id = "FVVYBWX-4SHRCJO-ZBUMK53-FYW2P5V-VV2BBUW-HKLN7CI-7ZNU3NA-HNKPAQV";};
         "phone" = {id = "GFA35HI-Z7P7FDK-7WL2SZB-BYYQF4N-WBP34QR-GMHMBIY-4ZDQWSG-7LSUGQN";};
       };
       folders = let
         devices = ["phone" "pc" "laptop"];
       in {
-        "${config.home.homeDirectory}/Obsidian" = {
-          id = "Obsidian";
+        "${config.home.homeDirectory}/sync" = {
+          id = "sync";
           inherit devices;
         };
-        "${config.home.homeDirectory}/.config/keepassxc/kdbx" = {
-          id = "keepass";
-          inherit devices;
-        };
-        "${config.home.homeDirectory}/Archive" = {
-          id = "Archive";
-          inherit devices;
-        };
-        "${config.home.homeDirectory}/Repos/Shared" = {
-          id = "Shared Repos";
-          inherit devices;
-        };
-        "${config.home.homeDirectory}/nixos" = {
-          id = "nixos";
-          inherit devices;
-        };
-        "/mnt/hd/stuff/syncthing" = {
-          id = "anime sync";
-          devices = ["phone" "pc"];
-        };
+        # "/mnt/hd/stuff/syncthing" = {
+        #   id = "anime sync";
+        #   devices = ["phone" "pc"];
+        # };
       };
     };
   };
@@ -114,10 +83,6 @@ in {
   programs = {
     vicinae = {
       enable = true;
-      extensions = defVicinaeExtesions [
-        "nix"
-        "firefox"
-      ];
     };
 
     yazi = {
