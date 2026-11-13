@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [./hardware-configuration.nix];
 
   # this overlay will only be applied for pc
@@ -29,6 +26,7 @@
       # nv_core_clock_mhz_offset = 100;
       # nv_mem_clock_mhz_offset = 200;
     };
+    ydotool.enable = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -38,6 +36,7 @@
     ddcutil
     ddcui
     android-tools
+    ydotool
 
     #-apps-#
     anki-bin
@@ -45,10 +44,7 @@
     mpv # with yt-dlp
     mpvScripts.mpris
     universal-android-debloater
-    # aseprite
     azahar
-    godot
-    blender
   ];
 
   # Open ports in the firewall.
@@ -56,54 +52,5 @@
   networking.firewall = {
     allowedTCPPorts = [53250];
     allowedUDPPorts = [53250];
-  };
-
-  # automatic backups
-  # services.btrbk = {
-  #   niceness = 10;
-  #   instances.hd = {
-  #     onCalendar = "daily";
-  #     settings = {
-  #       # nix creates a btrbk user,
-  #       # so it has problems with permissions
-  #       # transaction_log = "/var/log/btrbk.log";
-  #       # lockfile = "/run/lock/btrbk.lock";
-  #       stream_buffer = "256m";
-  #       snapshot_create = "onchange";
-  #       snapshot_preserve_min = "latest";
-  #       target_preserve = "0h 10d 5w 6m 0y";
-  #       target_preserve_min = "latest";
-  #       volume."/mnt/ssd" = {
-  #         target = "/mnt/hd/system_backup";
-  #         subvolume = "home/user";
-  #       };
-  #     };
-  #   };
-  # };
-
-  # btrbk is erroring out because it's trying to run b4 the hd is mounted
-  # systemd.services.btrbk-hd.unitConfig.RequiresMountsFor = "/mnt/ssd /mnt/hd/system_backup";
-
-  systemd.services.windows-sync = {
-    script = ''
-      ${pkgs.rsync}/bin/rsync -av /home/user/.config/keepassxc/file.kdbx /mnt/windows/Users/user/Documents/
-      ${pkgs.rsync}/bin/rsync -av --delete /home/user/Archive/wallpapers/_favorites/ /mnt/windows/Users/user/Pictures/walls/
-
-      ${pkgs.rsync}/bin/rsync -av --delete --exclude='*cache*' --exclude='*/Microsoft*/' --exclude='*/Windows*/' --exclude='*/NVIDIA*/' --exclude='*/Mozilla*/' --filter='- /Local/Temp' /mnt/windows/Users/user/AppData/ /home/user/Archive/windows-backup/AppData
-      ${pkgs.rsync}/bin/rsync -av --delete --filter='- /file.kdbx' /mnt/windows/Users/user/Documents/ /home/user/Archive/windows-backup/Documents/
-
-      ${pkgs.rsync}/bin/rsync -av --delete --filter='- /nodedist' '/mnt/windows-hd/Pirate/HITMAN - World of Assassination/Peacock' /home/user/Archive/windows-backup/hitman
-    '';
-    serviceConfig = {
-      Type = "oneshot";
-      User = "user";
-    };
-  };
-  systemd.timers.windows-sync = {
-    wantedBy = ["timers.target"];
-    timerConfig = {
-      OnCalendar = "daily";
-      Unit = "windows-sync.service";
-    };
   };
 }

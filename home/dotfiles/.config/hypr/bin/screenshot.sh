@@ -5,5 +5,5 @@ setshader() {
   hyprctl eval "$cmd"
 }
 setshader ""
-grim ${1:+-g "$(slurp -b 110F0D77)"} ~/Archive/"$(date +%y-%m-%d_%H-%M.png)"
+grim ${1:+-g "$(slurp -b 110F0D77)"} ~/sync/archive/"$(date +%y-%m-%d_%H-%M.png)"
 setshader "$HOME/.config/hypr/blue-light-filter.glsl"

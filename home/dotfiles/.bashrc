@@ -6,7 +6,7 @@
 PS1='\[\e[38;5;114m\]\w\[\e[0m\] \[\e[38;5;230m\]>\[\e[0m\] '
 
 # remove these misterious file that just crop up
-rm ~/.bash_history-*.tmp &>/dev/null
+# rm ~/.bash_history-*.tmp &>/dev/null
 
 # unset HISTFILE
 shopt -s dotglob # hidden files exist
@@ -25,6 +25,9 @@ export MANROFFOPT="-P -c"
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+
+# never cleanup shader cache (nvidia)
+export __GL_SHADER_DISK_CACHE_SKIP_CLEANUP=1
 
 # please dark theme for everything
 export ADW_DEBUG_COLOR_SCHEME=prefer-dark
@@ -49,6 +52,7 @@ alias fd='fd -HE /mnt'
 alias nt='nix-tree'
 alias ndev='nix develop'
 alias gits='git status'
+alias gitsw='git show --pretty=fuller'
 alias gita='git add'
 alias gitc='git commit'
 alias gitcam='git commit --amend'
@@ -60,6 +64,7 @@ alias gitds='git diff --staged'
 alias gitd='git diff'
 alias gitg='git grep'
 alias gitl='git log'
+alias gitb='git branch'
 alias gitunstage='git restore --staged'
 alias lsblk='lsblk -f'
 alias b='bluetoothctl'

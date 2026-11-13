@@ -42,6 +42,7 @@
         "browser.compactmode.show" = true;
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # https://github.com/djc/no-close-buttons
         "extensions.webextensions.restrictedDomains" = ""; # and enable on restricted pages for dark reader
+        "browser.tabs.splitView.enabled" = false;
       };
     };
   };
@@ -69,6 +70,7 @@
     wl-gammactl
     swaynotificationcenter
     mesa-demos # i like to have glxinfo
+    scrcpy
     # pandoc # markdown to odt converter
 
     keepassxc
@@ -79,6 +81,7 @@
       nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.wrapGAppsHook3];
       buildInputs = oldAttrs.buildInputs ++ [pkgs.gsettings-desktop-schemas];
     }))
+    evince # for pdf reader dark mode
     # dconf-editor
     # rnote
     # gparted

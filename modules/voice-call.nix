@@ -1,7 +1,7 @@
 # smartphone mic on the pc for discord
 {pkgs, ...}: {
   environment.systemPackages = with pkgs; [
-    mumble
+    (pkgs.callPackage ../pkgs/mumble-pipewire-fixed.nix {})
     qpwgraph
     discord
   ];

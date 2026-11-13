@@ -22,6 +22,5 @@
   environment.systemPackages = with pkgs; [
     ntfs3g
     brightnessctl
-    godot
   ];
 }

@@ -4,27 +4,10 @@
 
 [mgr]
 prepend_keymap = [
+	{ on = ["g", "d"],   run = 'cd ~/sync/nixos/home/dotfiles',                     desc = "" },
 
-	{ on = [ "g", "h" ],       run = "cd ~",                        desc = "home" },
-	{ on = [ "g", "c" ],       run = "cd ~/.config",                desc = "config" },
-	{ on = [ "g", "D" ],       run = "cd ~/nixos/home/dotfiles",    desc = "dotfiles" },
-	{ on = [ "g", "s" ],       run = "cd ~/.local/share",           desc = "local/share" },
-	{ on = [ "g", "d" ],       run = "cd ~/Downloads",              desc = "Downloads" },
-	{ on = [ "g", "r" ],       run = "cd ~/Repos",                  desc = "Repos" },
-	{ on = [ "g", "a" ],       run = "cd ~/Archive",                desc = "Archive" },
-	{ on = [ "g", "w" ],       run = "cd ~/Archive/wallpapers",     desc = "wallpapers" },
-	{ on = [ "g", "n" ],       run = "cd ~/nixos",                  desc = "nixos" },
-	{ on = [ "g", "N" ],       run = "cd /nix/store",               desc = "nix/store" },
-	{ on = [ "g", "G" ],       run = "cd ~/Games",                  desc = "Games" },
-	{ on = [ "g", "o" ],       run = "cd ~/Obsidian",               desc = "Obsidian" },
-	{ on = [ "g", "W" ],       run = "cd /mnt/windows/Users/user/", desc = "windows user" },
-	{ on = [ "g", "m" ],       run = "cd /mnt",                     desc = "mnt" },
-	{ on = [ "g", "H" ],       run = "cd /mnt/hd/stuff",            desc = "hd stuff" },
-	{ on = [ "g", "t" ],       run = "cd /mnt/hd/stuff/Torrent",    desc = "torrents" },
-	{ on = [ "g", "<Space>" ], run = "cd --interactive",            desc = "interactively" },
-
-	{ on = "<C-s>",   run = 'shell foot --orphan',                               desc = "Open new terminal window here" },
-	{ on = "<C-q>",   run = '''shell 'ripdrag "$@"' --confirm''',                desc = "Drag and drop" },
-	{ on = "<C-h>",   run = "hardlink",                                          desc = "Hardlink yanked files" },
-	{ on = "T",       run = "plugin toggle-pane min-preview",                    desc = "Show or hide the preview pane" },
+	{ on = "<C-s>",      run = 'shell foot --orphan',                               desc = "Open new terminal window here" },
+	{ on = "<C-q>",      run = '''shell 'ripdrag "$@"' --confirm''',                desc = "Drag and drop" },
+	{ on = "<C-h>",      run = "hardlink",                                          desc = "Hardlink yanked files" },
+	{ on = "T",          run = "plugin toggle-pane min-preview",                    desc = "Show or hide the preview pane" },
 ]

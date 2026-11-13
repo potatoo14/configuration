@@ -1,4 +1,8 @@
-{pkgs, extraArgs, ...}: {
+{
+  pkgs,
+  extraArgs,
+  ...
+}: {
   programs = {
     # using gamemode instead of manually setting cpu governor
     gamemode = {
@@ -13,12 +17,21 @@
     };
     steam = {
       enable = true;
-      extraCompatPackages = if extraArgs.username == "user" then [pkgs.dw-proton-bin] else [];
+      extraCompatPackages =
+        if extraArgs.username == "user"
+        then [pkgs.dw-proton-bin]
+        else [];
       package = pkgs.steam.override {
         extraEnv = {
           MANGOHUD = true;
           PROTON_USE_XALIA = false; # i don't use controllers and dwproton's xalia has a high cpu usage bug
         };
+        # specifically to fix tf2 input handing bug
+        # wierd interaction with mastercomfig null-cancelling movment
+        extraLibraries = p:
+          with p; [
+            SDL2
+          ];
       };
     };
   };
@@ -26,7 +39,7 @@
     (final: prev: {
       dw-proton-bin = prev.proton-ge-bin.overrideAttrs (oldAttrs: rec {
         pname = "dw-proton-bin";
-        version = "dwproton-11.0-5";
+        version = "dwproton-11.0-13";
         src = prev.fetchzip {
           url = "https://dawn.wine/dawn-winery/dwproton/releases/download/${version}/${version}-x86_64.tar.xz";
           hash = "sha256-2x4xotJ2aJYbg+G2TDPqyU7uuoc/hZQon9CA6SFGin0=";

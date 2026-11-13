@@ -35,9 +35,12 @@
 
   systemd.coredump.settings.Coredump = {
     Storage = "none";
-    ProcessSizeMax = 0;
+    MaxUse = 0;
   };
-  services.journald.extraConfig = "SystemMaxUse=100M";
+
+  services.journald.settings.Journal = {
+    SystemMaxUse = "100M";
+  };
 
   # dbus broker is faster and more efficient, it's the default on arch and fedora
   services.dbus.implementation = "broker";
@@ -106,8 +109,9 @@
     fastfetch
     onefetch
     ncdu
-    # trash-cli # trash is borked on btrfs subvolumes
+    trash-cli # trash is borked on btrfs subvolumes
     fd
+    ripgrep
     python3
     jq
     usbutils # for lsusb
@@ -121,7 +125,7 @@
     nix-index
     wlrctl
     nix-auth
-    bubblewrap
+    dotool
 
     #-language-utils-#
     git
@@ -140,13 +144,6 @@
     emmylua-ls
     emmylua-check
   ];
-
-  # automatic garbage collection
-  # programs.nh.clean = {
-  #   enable = true;
-  #   extraArgs = "--keep-since 7d";
-  #   dates = "daily";
-  # };
 
   # save space by hardlinking identical files
   nix.optimise = {

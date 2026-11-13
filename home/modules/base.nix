@@ -20,7 +20,7 @@ in {
   home.file =
     {
       # for hyprland.lua autocompletion (because of how nix doesn't follow FHS)
-      "nixos/.emmyrc.json".text = builtins.toJSON {
+      "sync/nixos/.emmyrc.json".text = builtins.toJSON {
         workspace = {
           library = ["${pkgs.hyprland}/share/hypr/stubs"];
         };
@@ -65,17 +65,15 @@ in {
         "laptop" = {id = "FVVYBWX-4SHRCJO-ZBUMK53-FYW2P5V-VV2BBUW-HKLN7CI-7ZNU3NA-HNKPAQV";};
         "phone" = {id = "GFA35HI-Z7P7FDK-7WL2SZB-BYYQF4N-WBP34QR-GMHMBIY-4ZDQWSG-7LSUGQN";};
       };
-      folders = let
-        devices = ["phone" "pc" "laptop"];
-      in {
+      folders = {
         "${config.home.homeDirectory}/sync" = {
           id = "sync";
-          inherit devices;
+          devices = ["phone" "pc" "laptop"];
         };
-        # "/mnt/hd/stuff/syncthing" = {
-        #   id = "anime sync";
-        #   devices = ["phone" "pc"];
-        # };
+        "/hd/stuff/syncthing" = {
+          id = "anime sync";
+          devices = ["phone" "pc"];
+        };
       };
     };
   };
@@ -149,4 +147,8 @@ in {
       color-scheme = "prefer-dark";
     };
   };
+
+  # TODO: figure out this later
+  # gamemoded is now a user unit
+  # systemd.user.services.gamemoded = ;
 }

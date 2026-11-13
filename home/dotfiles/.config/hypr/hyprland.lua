@@ -140,6 +140,9 @@ hl.config({
   ecosystem = {
     no_update_news = true,
     no_donation_nag = true
+  },
+  binds = {
+    scroll_event_delay = 0
   }
 })
 
@@ -307,34 +310,34 @@ end
 multiBind({ "XF86AudioPlay", "MOD3 + 1" }, mplayer("play-pause"))
 multiBind({ "XF86AudioPrev", "MOD3 + 2" }, mplayer("previous"))
 multiBind({ "XF86AudioNext", "MOD3 + 3" }, mplayer("next"))
-multiBind({ "XF86AudioMute", "MOD3 + f" }, hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 
 local vol = mkScriptRunner("volume.sh")
-multiBind({ "XF86AudioRaiseVolume", "MOD3 + d" }, vol("+"))
-multiBind({ "XF86AudioLowerVolume", "MOD3 + s" }, vol("-"))
+multiBind({ "XF86AudioRaiseVolume", "MOD3 + x" }, vol("+"))
+multiBind({ "XF86AudioLowerVolume", "MOD3 + z" }, vol("-"))
+multiBind({ "XF86AudioMute", "MOD3 + c" }, hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"))
 
 local bri = mkScriptRunner("brightness.sh")
-multiBind({ "XF86MonBrightnessUp", "MOD3 + e" }, bri("+"))
-multiBind({ "XF86MonBrightnessDown", "MOD3 + w" }, bri("-"))
+multiBind({ "XF86MonBrightnessUp", "MOD3 + r" }, bri("+"))
+multiBind({ "XF86MonBrightnessDown", "MOD3 + e" }, bri("-"))
 
 -- ==========================================
 -- SYSTEM, SHADERS & UTILITIES
 -- ==========================================
 
 -- looks cursed, but bash is just this convinient
-local toggle_ja = [[
-if [ "$(fcitx5-remote -n)" = "mozc" ]; then
-  fcitx5-remote -s keyboard-us
-  else fcitx5-remote -s mozc
-fi
-]]
+-- local toggle_ja = [[
+-- if [ "$(fcitx5-remote -n)" = "mozc" ]; then
+--   fcitx5-remote -s keyboard-us
+--   else fcitx5-remote -s mozc
+-- fi
+-- ]]
 local toggle_intl = [[
 if [ "$(fcitx5-remote -n)" = "keyboard-us-intl" ]; then
   fcitx5-remote -s keyboard-us
   else fcitx5-remote -s keyboard-us-intl
 fi
 ]]
-hl.bind("MOD3 + q", hl.dsp.exec_cmd(toggle_ja))
+-- hl.bind("MOD3 + q", hl.dsp.exec_cmd(toggle_ja))
 hl.bind("MOD3 + a", hl.dsp.exec_cmd(toggle_intl))
 
 local scrs = mkScriptRunner("screenshot.sh")
@@ -342,16 +345,18 @@ hl.bind("SHIFT + print", scrs("select_mode"))
 hl.bind("print", scrs(""))
 
 local shader = mkScriptRunner("shader.py")
-hl.bind("MOD3 + x", shader("+"))
-hl.bind("MOD3 + z", shader("-"))
+hl.bind("MOD3 + w", shader("+"))
+hl.bind("MOD3 + q", shader("-"))
 
 hl.bind("MOD3 + SUPER + q", hl.dsp.exec_cmd("hyprpicker -a"))
 
 hl.bind("SUPER + ALT + s", reload)
 hl.bind("SUPER + ALT + a", hl.dsp.exec_cmd("pkill waybar"))
 
-hl.bind("SUPER + ALT + z", hl.dsp.exec_cmd("roccatsavucontrol -a 1"))
-hl.bind("SUPER + ALT + x", hl.dsp.exec_cmd("roccatsavucontrol -a 2"))
+-- why it's not repeating?
+local scroll_sens = 2
+hl.bind("MOD3 + s", hl.dsp.exec_cmd("ydotool mousemove -w -- 0 -" .. scroll_sens), { repeating = true })
+hl.bind("MOD3 + d", hl.dsp.exec_cmd("ydotool mousemove -w -- 0 " .. scroll_sens), { repeating = true })
 
 -- check tearing in the actual game
 hl.bind("SUPER + ALT + tab", hl.dsp.exec_cmd("hyprctl monitors > ~/monitors.txt"))

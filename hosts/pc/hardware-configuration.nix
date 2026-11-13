@@ -1,10 +1,10 @@
 {
+  pkgs,
   lib,
   config,
   modulesPath,
   ...
 }: {
-
   boot = {
     loader = {
       systemd-boot.enable = true;
@@ -12,6 +12,8 @@
       efi.canTouchEfiVariables = true;
       timeout = 3;
     };
+
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
   };
 
   hardware.bluetooth.enable = true;
@@ -65,19 +67,27 @@
   # don't know if i use compression or not
   # it can be faster than without if io bandwith is low enough
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/027c018f-f392-4c28-a2ff-91446b169155";
+    device = "/dev/disk/by-uuid/bf189aee-da32-46e8-abcb-a3189ea44754";
     fsType = "btrfs";
-    options = ["subvol=root" "noatime" "compress=zstd:3"];
+    options = ["subvol=root" "noatime" "compress=zstd:1"];
   };
-
   fileSystems."/home/user" = {
+    device = "/dev/disk/by-uuid/bf189aee-da32-46e8-abcb-a3189ea44754";
+    fsType = "btrfs";
+    options = ["subvol=user" "noatime" "compress=zstd:1"];
+  };
+  fileSystems."/ssd" = {
+    device = "/dev/disk/by-uuid/bf189aee-da32-46e8-abcb-a3189ea44754";
+    fsType = "btrfs";
+    options = ["noatime" "compress=zstd:1"];
+  };
+  fileSystems."/hd" = {
     device = "/dev/disk/by-uuid/027c018f-f392-4c28-a2ff-91446b169155";
     fsType = "btrfs";
-    options = ["subvol=user" "noatime" "compress=zstd:3"];
+    options = ["noatime" "compress=zstd:3"];
   };
-
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/07AA-9649";
+    device = "/dev/disk/by-uuid/24A1-9255";
     fsType = "vfat";
     options = ["fmask=0137" "dmask=0027" "noatime"];
   };

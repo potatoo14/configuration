@@ -55,10 +55,10 @@
     fsType = "btrfs";
     options = ["subvol=Stuff" "noatime" "nofail" "x-systemd.device-timeout=10" "compress=zstd:3"];
   };
-  fileSystems."/home/potato/Archive" = {
+  fileSystems."/home/potato/sync" = {
     device = "/dev/disk/by-uuid/f1df8be9-db64-49f4-a430-b54600d39e46";
     fsType = "btrfs";
-    options = ["subvol=Archive" "noatime" "nofail" "x-systemd.device-timeout=10" "compress=zstd:3"];
+    options = ["subvol=sync" "noatime" "nofail" "x-systemd.device-timeout=10" "compress=zstd:3"];
   };
 
   swapDevices = [];
