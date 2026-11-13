@@ -70,9 +70,11 @@
     wl-gammactl
     swaynotificationcenter
     mesa-demos # i like to have glxinfo
-    scrcpy
+    scrcpy # actual good way to use my phone mic for voice calls
     # pandoc # markdown to odt converter
 
+    discord
+    qpwgraph
     keepassxc
     qalculate-gtk
     pavucontrol

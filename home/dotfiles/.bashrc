@@ -73,6 +73,7 @@ alias sshlap='ssh potato@192.168.18.27'
 alias sshpc='ssh user@192.168.18.4'
 alias heic2png='magick mogrify -format png *.heic'
 alias png2pdf='magick *.png out.pdf'
+alias phonemic='scrcpy --audio-source=mic-voice-communication --no-video --no-window --require-audio'
 
 hyprexec() {
 	hyprctl eval "custom_exec({'$*'})"
